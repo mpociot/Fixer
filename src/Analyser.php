@@ -77,7 +77,7 @@ class Analyser
     public function analyse($path)
     {
         $this->stopwatch->start('fixFiles');
-        $this->fixer->fix($this->config->resolve($path));
+        $this->fixer->fix($this->config->resolve($path, $this->fixer->getFixers()));
         $this->stopwatch->stop('fixFiles');
 
         $event = $this->stopwatch->getEvent('fixFiles');

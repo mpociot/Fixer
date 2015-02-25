@@ -47,19 +47,18 @@ class ConfigResolver
      * Get the php-cs-fixer config object for the repo at the given path.
      *
      * @param string $path
+     * @param arrray $fixers
      *
      * @return \Symfony\CS\Config\Config
      */
-    public function resolve($path)
+    public function resolve($path, $fixers)
     {
-        $fixers = $this->getConfigObject($path)->getFixers();
-
-        $config = Config::create()->level(FixerInterface::NONE_LEVEL)->fixers($fixers);
+        $config = Config::create()->level(FixerInterface::NONE_LEVEL)->fixers($this->getConfigObject($path)->getFixers());
         $config->finder(DefaultFinder::create()->notName('*.blade.php')->exclude('storage')->in($path));
         $config->setDir($path);
 
         $resolver = new ConfigurationResolver();
-        $resolver->setAllFixers($this->fixer->getFixers())->setConfig($config)->resolve();
+        $resolver->setAllFixers($fixers)->setConfig($config)->resolve();
 
         $config->fixers($resolver->getFixers());
 
