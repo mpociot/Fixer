@@ -21,7 +21,7 @@ StyleCI Fixer was created by, and is maintained by [Graham Campbell](https://git
 To get the latest version of StyleCI Fixer, simply add the following line to the require block of your `composer.json` file:
 
 ```
-"styleci/fixer": "0.1.*"
+"styleci/fixer": "0.2.*"
 ```
 
 You'll then need to run `composer install` or `composer update` to download it and have the autoloader updated.
