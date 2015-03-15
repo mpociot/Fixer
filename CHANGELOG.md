@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V0.2.1 Alpha (15/03/2015)
+
+* Updated the php-cs-fixer version constraint
+
+
 ## V0.2 Alpha (26/02/2015)
 
 * Added new config system using .styleci.yml
