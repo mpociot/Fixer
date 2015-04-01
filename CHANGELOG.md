@@ -4,8 +4,8 @@ CHANGE LOG
 
 ## V0.3 Alpha (Upcoming)
 
-* Upgraded to the latest config package
-* Upgraded to php-cs-fixer 1.6
+* Added more configuration
+* Upgraded to php-cs-fixer 1.7
 
 
 ## V0.2.1 Alpha (15/03/2015)
