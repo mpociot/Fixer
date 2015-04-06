@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace StyleCI\Fixer;
+namespace StyleCI\Fixer\Analysers;
 
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\ErrorsManager;
@@ -17,11 +17,11 @@ use Symfony\CS\Fixer;
 use Symfony\CS\LintManager;
 
 /**
- * This is the analyser class.
+ * This is the php cs fixer analyser class.
  *
  * @author Graham Campbell <graham@mineuk.com>
  */
-class Analyser
+class PHPCSFixerAnalyser implements AnalyserInterface
 {
     /**
      * The cs fixer instance.
