@@ -11,10 +11,10 @@
 
 namespace StyleCI\Fixer;
 
+use StyleCI\Config\Config;
 use StyleCI\Config\ConfigFactory;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigurationResolver;
-use Symfony\CS\Finder\DefaultFinder;
 use Symfony\CS\FixerInterface;
 
 /**
@@ -53,8 +53,10 @@ class ConfigResolver
      */
     public function resolve($path, $fixers)
     {
-        $config = Config::create()->level(FixerInterface::NONE_LEVEL)->fixers($this->getConfigObject($path)->getFixers());
-        $config->finder(DefaultFinder::create()->notName('*.blade.php')->exclude('storage')->in($path));
+        $conf = $this->getConfigObject($path);
+        $config = Config::create()->level(FixerInterface::NONE_LEVEL)->fixers($conf->getFixers());
+
+        $config->finder($this->getFinderObject($conf)->in($path));
         $config->setDir($path);
 
         $resolver = new ConfigurationResolver();
@@ -81,5 +83,23 @@ class ConfigResolver
         }
 
         return $this->factory->make();
+    }
+
+    /**
+     * Get the styleci finder object.
+     *
+     * @param \StyleCI\Config\Config $conf
+     *
+     * @return \StyleCI\Fixer\Finder
+     */
+    protected function getFinderObject(Config $conf)
+    {
+        $finder = Finder::create()->notName('*.blade.php')->exclude('storage');
+
+        foreach ($conf->getExtensions() as $extension) {
+            $finder->name('*.'.$extension);
+        }
+
+        return $finder;
     }
 }
