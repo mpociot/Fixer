@@ -11,7 +11,7 @@
 
 namespace StyleCI\Fixer;
 
-use StyleCI\Config\Config;
+use StyleCI\Config\Config as Conf;
 use StyleCI\Config\ConfigFactory;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigurationResolver;
@@ -92,12 +92,16 @@ class ConfigResolver
      *
      * @return \StyleCI\Fixer\Finder
      */
-    protected function getFinderObject(Config $conf)
+    protected function getFinderObject(Conf $conf)
     {
-        $finder = Finder::create()->notName('*.blade.php')->exclude('storage');
+        $finder = Finder::create()->notName('*.blade.php');
 
         foreach ($conf->getExtensions() as $extension) {
             $finder->name('*.'.$extension);
+        }
+
+        foreach ($conf->getExcluded() as $excluded) {
+            $finder->exclude($excluded);
         }
 
         return $finder;
