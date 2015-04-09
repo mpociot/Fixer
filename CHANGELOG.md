@@ -2,7 +2,7 @@ CHANGE LOG
 ==========
 
 
-## V0.3 Alpha (Upcoming)
+## V0.3 Alpha (09/04/2015)
 
 * Upgraded to the latest config package
 * Upgraded to php-cs-fixer 1.6
