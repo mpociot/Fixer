@@ -13,6 +13,7 @@ namespace StyleCI\Fixer;
 
 use StyleCI\Config\Config as Conf;
 use StyleCI\Config\ConfigFactory;
+use StyleCI\Config\FinderConfig;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigurationResolver;
 use Symfony\CS\FixerInterface;
@@ -47,7 +48,7 @@ class ConfigResolver
      * Get the php-cs-fixer config object for the repo at the given path.
      *
      * @param string $path
-     * @param arrray $fixers
+     * @param array  $fixers
      *
      * @return \Symfony\CS\Config\Config
      */
@@ -95,15 +96,66 @@ class ConfigResolver
     protected function getFinderObject(Conf $conf)
     {
         $finder = Finder::create()->notName('*.blade.php');
+        $finderConfig = $conf->getFinderConfig();
 
-        foreach ($conf->getExtensions() as $extension) {
-            $finder->name('*.'.$extension);
-        }
+        if (null !== $finderConfig) {
+            $this->configureFinder($finderConfig, $finder);
+        } else {
+            foreach ($conf->getExtensions() as $extension) {
+                $finder->name('*.'.$extension);
+            }
 
-        foreach ($conf->getExcluded() as $excluded) {
-            $finder->exclude($excluded);
+            foreach ($conf->getExcluded() as $excluded) {
+                $finder->exclude($excluded);
+            }
         }
 
         return $finder;
+    }
+
+    /**
+     * Configure the finder with provided configuration.
+     *
+     * @param \StyleCI\Config\FinderConfig $finderConfig
+     * @param \StyleCI\Fixer\Finder        $finder
+     *
+     * @return void
+     */
+    protected function configureFinder(FinderConfig $finderConfig, Finder $finder)
+    {
+        $finder->in($finderConfig->getIn());
+        $finder->exclude($finderConfig->getExclude());
+
+        foreach ($finderConfig->getName() as $pattern) {
+            $finder->name($pattern);
+        }
+
+        foreach ($finderConfig->getNotName() as $pattern) {
+            $finder->notName($pattern);
+        }
+
+        foreach ($finderConfig->getContains() as $pattern) {
+            $finder->contains($pattern);
+        }
+
+        foreach ($finderConfig->getNotContains() as $pattern) {
+            $finder->notContains($pattern);
+        }
+
+        foreach ($finderConfig->getPath() as $pattern) {
+            $finder->path($pattern);
+        }
+
+        foreach ($finderConfig->getNotPath() as $pattern) {
+            $finder->notPath($pattern);
+        }
+
+        foreach ($finderConfig->getDepth() as $depth) {
+            $finder->depth($depth);
+        }
+
+        foreach ($finderConfig->getDate() as $date) {
+            $finder->date($date);
+        }
     }
 }
