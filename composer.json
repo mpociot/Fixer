@@ -18,13 +18,13 @@
         }
     ],
     "require": {
-        "php": ">=5.5.0",
+        "php": ">=5.5.9",
         "fabpot/php-cs-fixer": "~1.8.1",
         "styleci/config": "0.3.*",
         "styleci/git": "0.1.*"
     },
     "require-dev": {
-        "graham-campbell/testbench": "~2.0"
+        "graham-campbell/testbench": "~2.1"
     },
     "suggest": {
         "illuminate/support": "Enables Laravel support (~5.0)."
