@@ -11,8 +11,10 @@
 
 namespace StyleCI\Fixer;
 
+use Exception;
 use StyleCI\Config\Config as Conf;
 use StyleCI\Config\ConfigFactory;
+use StyleCI\Config\Exceptions\InvalidFinderSetupException;
 use StyleCI\Config\FinderConfig;
 use Symfony\CS\Config\Config;
 use Symfony\CS\ConfigurationResolver;
@@ -50,6 +52,8 @@ class ConfigResolver
      * @param string $path
      * @param array  $fixers
      *
+     * @throws \StyleCI\Config\Exceptions\InvalidFinderSetupException
+     *
      * @return \Symfony\CS\Config\Config
      */
     public function resolve($path, $fixers)
@@ -57,7 +61,13 @@ class ConfigResolver
         $conf = $this->getConfigObject($path);
         $config = Config::create()->level(FixerInterface::NONE_LEVEL)->fixers($conf->getFixers());
 
-        $config->finder($this->getFinderObject($conf)->in($path));
+        try {
+            $finder = $this->getFinderObject($conf);
+        } catch (Exception $e) {
+            throw new InvalidFinderSetupException($e);
+        }
+
+        $config->finder($finder->in($path));
         $config->setDir($path);
 
         $resolver = new ConfigurationResolver();
