@@ -98,7 +98,7 @@ class ConfigResolver
         $finder = Finder::create()->notName('*.blade.php');
         $finderConfig = $conf->getFinderConfig();
 
-        if (null !== $finderConfig) {
+        if ($finderConfig) {
             $this->configureFinder($finderConfig, $finder);
         } else {
             foreach ($conf->getExtensions() as $extension) {
