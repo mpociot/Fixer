@@ -2,9 +2,10 @@ CHANGE LOG
 ==========
 
 
-## V0.4 Alpha (Upcoming)
+## V0.4 Alpha (30/05/2015)
 
 * Upgraded to php-cs-fixer 1.9
+* Support more configuration
 
 
 ## V0.3 Alpha (09/04/2015)
