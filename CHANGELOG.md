@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V0.4.1 Alpha (02/06/2015)
+
+* Make sure we're iterating an array
+
+
 ## V0.4 Alpha (30/05/2015)
 
 * Upgraded to php-cs-fixer 1.9
