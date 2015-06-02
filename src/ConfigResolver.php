@@ -111,11 +111,11 @@ class ConfigResolver
         if ($finderConfig) {
             $this->configureFinder($finderConfig, $finder);
         } else {
-            foreach ($conf->getExtensions() as $extension) {
+            foreach ((array) $conf->getExtensions() as $extension) {
                 $finder->name('*.'.$extension);
             }
 
-            foreach ($conf->getExcluded() as $excluded) {
+            foreach ((array) $conf->getExcluded() as $excluded) {
                 $finder->exclude($excluded);
             }
         }
@@ -136,35 +136,35 @@ class ConfigResolver
         $finder->in($finderConfig->getIn());
         $finder->exclude($finderConfig->getExclude());
 
-        foreach ($finderConfig->getName() as $pattern) {
+        foreach ((array) $finderConfig->getName() as $pattern) {
             $finder->name($pattern);
         }
 
-        foreach ($finderConfig->getNotName() as $pattern) {
+        foreach ((array) $finderConfig->getNotName() as $pattern) {
             $finder->notName($pattern);
         }
 
-        foreach ($finderConfig->getContains() as $pattern) {
+        foreach ((array) $finderConfig->getContains() as $pattern) {
             $finder->contains($pattern);
         }
 
-        foreach ($finderConfig->getNotContains() as $pattern) {
+        foreach ((array) $finderConfig->getNotContains() as $pattern) {
             $finder->notContains($pattern);
         }
 
-        foreach ($finderConfig->getPath() as $pattern) {
+        foreach ((array) $finderConfig->getPath() as $pattern) {
             $finder->path($pattern);
         }
 
-        foreach ($finderConfig->getNotPath() as $pattern) {
+        foreach ((array) $finderConfig->getNotPath() as $pattern) {
             $finder->notPath($pattern);
         }
 
-        foreach ($finderConfig->getDepth() as $depth) {
+        foreach ((array) $finderConfig->getDepth() as $depth) {
             $finder->depth($depth);
         }
 
-        foreach ($finderConfig->getDate() as $date) {
+        foreach ((array) $finderConfig->getDate() as $date) {
             $finder->date($date);
         }
     }
