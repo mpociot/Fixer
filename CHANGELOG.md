@@ -2,6 +2,11 @@ CHANGE LOG
 ==========
 
 
+## V0.4.2 Alpha (Upcoming)
+
+* Use a newer version of the git component
+
+
 ## V0.4.1 Alpha (02/06/2015)
 
 * Make sure we're iterating an array
