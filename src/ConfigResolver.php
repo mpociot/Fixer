@@ -23,7 +23,7 @@ use Symfony\CS\FixerInterface;
 /**
  * This is the fixer resolver class.
  *
- * @author Graham Campbell <graham@cachethq.io>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class ConfigResolver
 {

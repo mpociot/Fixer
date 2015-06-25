@@ -16,7 +16,7 @@ use Gitonomy\Git\Diff\Diff;
 /**
  * This is the report class.
  *
- * @author Graham Campbell <graham@cachethq.io>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class Report
 {

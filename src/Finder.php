@@ -17,7 +17,7 @@ use Symfony\CS\FinderInterface;
 /**
  * This is the finder class.
  *
- * @author Graham Campbell <graham@cachethq.io>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class Finder extends SymfonyFinder implements FinderInterface
 {

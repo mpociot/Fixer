@@ -19,7 +19,7 @@ use Symfony\CS\LintManager;
 /**
  * This is the analyser class.
  *
- * @author Graham Campbell <graham@cachethq.io>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class Analyser
 {

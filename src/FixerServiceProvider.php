@@ -18,7 +18,7 @@ use Symfony\CS\Fixer;
 /**
  * This is the fixer service provider class.
  *
- * @author Graham Campbell <graham@cachethq.io>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class FixerServiceProvider extends ServiceProvider
 {

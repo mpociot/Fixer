@@ -17,7 +17,7 @@ use StyleCI\Git\RepositoryFactory;
 /**
  * This is the report builder class.
  *
- * @author Graham Campbell <graham@cachethq.io>
+ * @author Graham Campbell <graham@alt-three.com>
  */
 class ReportBuilder
 {
