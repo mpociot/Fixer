@@ -11,24 +11,43 @@
 
 namespace StyleCI\Tests\Fixer;
 
-use GrahamCampbell\TestBench\Traits\ServiceProviderTestCaseTrait;
+use GrahamCampbell\TestBench\AbstractPackageTestCase;
+use GrahamCampbell\TestBenchCore\ServiceProviderTrait;
+use StyleCI\Config\ConfigServiceProvider;
+use StyleCI\Fixer\Analyser;
+use StyleCI\Fixer\FixerServiceProvider;
+use StyleCI\Fixer\ReportBuilder;
+use StyleCI\Git\GitServiceProvider;
 
 /**
  * This is the service provider test class.
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
-class ServiceProviderTest extends AbstractTestCase
+class ServiceProviderTest extends AbstractPackageTestCase
 {
-    use ServiceProviderTestCaseTrait;
+    use ServiceProviderTrait;
+
+    protected function getRequiredServiceProviders($app)
+    {
+        return [
+            ConfigServiceProvider::class,
+            GitServiceProvider::class,
+        ];
+    }
+
+    protected function getServiceProviderClass($app)
+    {
+        return FixerServiceProvider::class;
+    }
 
     public function testAnalyserIsInjectable()
     {
-        $this->assertIsInjectable('StyleCI\Fixer\Analyser');
+        $this->assertIsInjectable(Analyser::class);
     }
 
     public function testReportBuilderIsInjectable()
     {
-        $this->assertIsInjectable('StyleCI\Fixer\ReportBuilder');
+        $this->assertIsInjectable(ReportBuilder::class);
     }
 }
