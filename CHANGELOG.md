@@ -2,9 +2,10 @@ CHANGE LOG
 ==========
 
 
-## V0.4.2 Alpha (Upcoming)
+## V0.4.2 Alpha (27/06/2015)
 
 * Use a newer version of the git component
+* Minor cleanup
 
 
 ## V0.4.1 Alpha (02/06/2015)
