@@ -1,17 +1,11 @@
 # StyleCI Fixer ![Analytics](https://ga-beacon.appspot.com/UA-60053271-6/StyleCI/Fixer?pixel)
 
 
-StyleCI Fixer was created by, and is maintained by [Graham Campbell](https://github.com/GrahamCampbell), and is a code style report builder. It utilises the [PHP Coding Standards Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) package. Feel free to check out the [releases](https://github.com/StyleCI/Fixer/releases), [license](LICENSE), and [contribution guidelines](CONTRIBUTING.md).
-
-![StyleCI Fixer](https://cloud.githubusercontent.com/assets/2829600/5893830/e1bc5366-a4ea-11e4-9be4-58243d28f4c4.png)
-
-<p align="center">
 <a href="https://travis-ci.org/StyleCI/Fixer"><img src="https://img.shields.io/travis/StyleCI/Fixer/master.svg?style=flat-square" alt="Build Status"></img></a>
 <a href="https://scrutinizer-ci.com/g/StyleCI/Fixer/code-structure"><img src="https://img.shields.io/scrutinizer/coverage/g/StyleCI/Fixer.svg?style=flat-square" alt="Coverage Status"></img></a>
 <a href="https://scrutinizer-ci.com/g/StyleCI/Fixer"><img src="https://img.shields.io/scrutinizer/g/StyleCI/Fixer.svg?style=flat-square" alt="Quality Score"></img></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square" alt="Software License"></img></a>
 <a href="https://github.com/StyleCI/Fixer/releases"><img src="https://img.shields.io/github/release/StyleCI/Fixer.svg?style=flat-square" alt="Latest Version"></img></a>
-</p>
 
 
 ## Installation
@@ -31,9 +25,11 @@ If you're using Laravel 5, then you can register our service provider. Open up `
 * `'StyleCI\Fixer\FixerServiceProvider'`
 
 
-## Usage
+## Documentation
 
-StyleCI Fixer is designed to pull down code from github commits, analyse it, and build code style reports. There is currently no real documentation for this package, but we are open to pull requests.
+StyleCI Fixer was created by, and is maintained by [Graham Campbell](https://github.com/GrahamCampbell), and is a code style report builder.
+
+Feel free to check out the [releases](https://github.com/StyleCI/Fixer/releases), [license](LICENSE), and [contribution guidelines](CONTRIBUTING.md).
 
 
 ## License
