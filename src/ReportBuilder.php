@@ -52,14 +52,15 @@ class ReportBuilder
     /**
      * Analyse the commit and return the results.
      *
-     * @param string $repo
+     * @param string $name
+     * @param int    $id
      * @param string $commit
      *
      * @return \StyleCI\Fixer\Report
      */
-    public function analyse($repo, $commit)
+    public function analyse($name, $id, $commit)
     {
-        $repo = $this->factory->make($repo);
+        $repo = $this->factory->make($repo, (string) $id);
 
         $this->setup($repo, $commit);
 
@@ -69,7 +70,7 @@ class ReportBuilder
     }
 
     /**
-     * Set things up for analysis.
+     * Set things the repository locally for analysis.
      *
      * @param \StyleCI\Git\Repositories\RepositoryInterface $repo
      * @param string                                        $commit
