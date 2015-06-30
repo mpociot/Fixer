@@ -60,7 +60,7 @@ class ReportBuilder
      */
     public function analyse($name, $id, $commit)
     {
-        $repo = $this->factory->make($repo, (string) $id);
+        $repo = $this->factory->make($name, (string) $id);
 
         $this->setup($repo, $commit);
 
