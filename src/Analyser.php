@@ -11,7 +11,6 @@
 
 namespace StyleCI\Fixer;
 
-use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\LintManager;
@@ -38,31 +37,21 @@ class Analyser
     protected $config;
 
     /**
-     * The stopwatch instance.
-     *
-     * @var \Symfony\Component\Stopwatch\Stopwatch
-     */
-    protected $stopwatch;
-
-    /**
      * Create an analyser instance.
      *
-     * @param \Symfony\CS\Fixer                      $fixer
-     * @param \StyleCI\Fixer\ConfigResolver          $config
-     * @param \Symfony\Component\Stopwatch\Stopwatch $stopwatch
+     * @param \Symfony\CS\Fixer             $fixer
+     * @param \StyleCI\Fixer\ConfigResolver $config
      *
      * @return void
      */
-    public function __construct(Fixer $fixer, ConfigResolver $config, Stopwatch $stopwatch)
+    public function __construct(Fixer $fixer, ConfigResolver $config)
     {
         $this->fixer = $fixer;
         $this->config = $config;
-        $this->stopwatch = $stopwatch;
 
         $this->fixer->registerBuiltInFixers();
         $this->fixer->registerBuiltInConfigs();
 
-        $this->fixer->setStopwatch($this->stopwatch);
         $this->fixer->setErrorsManager(new ErrorsManager());
         $this->fixer->setLintManager(new LintManager());
     }
@@ -72,19 +61,12 @@ class Analyser
      *
      * @param string $path
      *
-     * @return array
+     * @return void
      */
     public function analyse($path)
     {
-        $this->stopwatch->start('fixFiles');
-        $this->fixer->fix($this->config->resolve($path, $this->fixer->getFixers()));
-        $this->stopwatch->stop('fixFiles');
+        $config = $this->config->resolve($path, $this->fixer->getFixers());
 
-        $event = $this->stopwatch->getEvent('fixFiles');
-
-        $time = round($event->getDuration() / 1000, 3);
-        $memory = round($event->getMemory() / 1024 / 1024, 3);
-
-        return compact('time', 'memory');
+        $this->fixer->fix($config);
     }
 }

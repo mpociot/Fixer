@@ -64,9 +64,9 @@ class ReportBuilder
 
         $this->setup($repo, $commit);
 
-        $data = $this->analyser->analyse($repo->path());
+        $this->analyser->analyse($repo->path());
 
-        return $this->buildReport($data, $repo);
+        return new Report($repo->diff());
     }
 
     /**
@@ -86,18 +86,5 @@ class ReportBuilder
         $repo->fetch();
 
         $repo->reset($commit);
-    }
-
-    /**
-     * Build the fixer report.
-     *
-     * @param array                                         $data
-     * @param \StyleCI\Git\Repositories\RepositoryInterface $repo
-     *
-     * @return \StyleCI\Fixer\Report
-     */
-    protected function buildReport(array $data, RepositoryInterface $repo)
-    {
-        return new Report($repo->diff(), $data['time'], $data['memory']);
     }
 }

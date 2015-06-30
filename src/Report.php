@@ -28,53 +28,15 @@ class Report
     protected $diff;
 
     /**
-     * The time taken to analyse the project.
-     *
-     * @var float
-     */
-    protected $time;
-
-    /**
-     * The memory used to analyse the project.
-     *
-     * @var float
-     */
-    protected $memory;
-
-    /**
      * Create a report instance.
      *
      * @param \Gitonomy\Git\Diff\Diff $diff
-     * @param float                   $time
-     * @param float                   $memory
      *
      * @return void
      */
-    public function __construct(Diff $diff, $time, $memory)
+    public function __construct(Diff $diff)
     {
         $this->diff = $diff;
-        $this->time = $time;
-        $this->memory = $memory;
-    }
-
-    /**
-     * Get the analyser processing time.
-     *
-     * @return float
-     */
-    public function time()
-    {
-        return $this->time;
-    }
-
-    /**
-     * Get the analyser memory usage.
-     *
-     * @return float
-     */
-    public function memory()
-    {
-        return $this->memory;
     }
 
     /**
