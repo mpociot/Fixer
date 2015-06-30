@@ -12,7 +12,6 @@
 namespace StyleCI\Fixer;
 
 use Illuminate\Support\ServiceProvider;
-use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\CS\Fixer;
 
 /**
@@ -43,9 +42,8 @@ class FixerServiceProvider extends ServiceProvider
         $this->app->singleton('fixer.analyser', function ($app) {
             $fixer = new Fixer();
             $config = new ConfigResolver($app['config.factory']);
-            $stopwatch = new Stopwatch();
 
-            return new Analyser($fixer, $config, $stopwatch);
+            return new Analyser($fixer, $config);
         });
 
         $this->app->alias('fixer.analyser', Analyser::class);
