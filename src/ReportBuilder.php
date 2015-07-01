@@ -11,6 +11,7 @@
 
 namespace StyleCI\Fixer;
 
+use InvalidArgumentException;
 use StyleCI\Git\Repositories\RepositoryInterface;
 use StyleCI\Git\RepositoryFactory;
 
@@ -52,17 +53,21 @@ class ReportBuilder
     /**
      * Analyse the commit and return the results.
      *
-     * @param string $name
-     * @param int    $id
-     * @param string $commit
+     * Note that you most provide either a branch or a pr, but not both.
+     *
+     * @param string      $name
+     * @param int         $id
+     * @param string      $commit
+     * @param string|null $branch
+     * @param int|null    $pr
      *
      * @return \StyleCI\Fixer\Report
      */
-    public function analyse($name, $id, $commit)
+    public function analyse($name, $id, $commit, $branch, $pr)
     {
         $repo = $this->factory->make($name, (string) $id);
 
-        $this->setup($repo, $commit);
+        $this->setup($repo, $commit, $branch, $pr);
 
         $this->analyser->analyse($repo->path());
 
@@ -74,16 +79,26 @@ class ReportBuilder
      *
      * @param \StyleCI\Git\Repositories\RepositoryInterface $repo
      * @param string                                        $commit
+     * @param string|null                                   $branch
+     * @param int|null                                      $pr
+     *
+     * @throws \InvalidArgumentException
      *
      * @return void
      */
-    protected function setup(RepositoryInterface $repo, $commit)
+    protected function setup(RepositoryInterface $repo, $commit, $branch, $pr)
     {
         if (!$repo->exists()) {
             $repo->get();
         }
 
-        $repo->fetch();
+        if ($this->branch) {
+            $repo->fetch(['origin', "refs/heads/$branch"]);
+        } elseif ($this->pr) {
+            $repo->fetch(['origin', "refs/pull/$pr/head"]);
+        } else {
+            throw new InvalidArgumentException('Either a repo or pr must be provided.');
+        }
 
         $repo->reset($commit);
     }
