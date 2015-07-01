@@ -92,9 +92,9 @@ class ReportBuilder
             $repo->get();
         }
 
-        if ($this->branch) {
+        if ($branch) {
             $repo->fetch(['origin', "refs/heads/$branch"]);
-        } elseif ($this->pr) {
+        } elseif ($pr) {
             $repo->fetch(['origin', "refs/pull/$pr/head"]);
         } else {
             throw new InvalidArgumentException('Either a repo or pr must be provided.');
