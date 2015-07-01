@@ -53,7 +53,7 @@ class ReportBuilder
     /**
      * Analyse the commit and return the results.
      *
-     * Note that you most provide either a branch or a pr, but not both.
+     * Note that you must provide either a branch or a pr, but not both.
      *
      * @param string      $name
      * @param int         $id
