@@ -12,6 +12,7 @@
 namespace StyleCI\Fixer;
 
 use Gitonomy\Git\Diff\Diff;
+use Symfony\CS\Error\ErrorsManager;
 
 /**
  * This is the report class.
@@ -28,21 +29,21 @@ class Report
     protected $diff;
 
     /**
-     * The analysis errors.
+     * The error manager instance.
      *
-     * @var array
+     * @var \Symfony\CS\Error\ErrorsManager
      */
     protected $errors;
 
     /**
      * Create a new report instance.
      *
-     * @param \Gitonomy\Git\Diff\Diff $diff
-     * @param array                   $errors
+     * @param \Gitonomy\Git\Diff\Diff         $diff
+     * @param \Symfony\CS\Error\ErrorsManager $errors
      *
      * @return void
      */
-    public function __construct(Diff $diff, array $errors)
+    public function __construct(Diff $diff, ErrorsManager $errors)
     {
         $this->diff = $diff;
         $this->errors = $errors;
@@ -79,24 +80,6 @@ class Report
     }
 
     /**
-     * Get the analysis errors.
-     *
-     * @return array
-     */
-    public function errors()
-    {
-        $errors = [];
-
-        foreach ($this->errors as $error) {
-            if ($error['type'] === 1) {
-                $error[] = ['type' => 'Internal Error', 'file' => $error['filepath'], 'message' => $error['message']];
-            }
-        }
-
-        return $errors;
-    }
-
-    /**
      * Get the linting errors.
      *
      * @return array
@@ -105,12 +88,26 @@ class Report
     {
         $lints = [];
 
-        foreach ($this->errors as $error) {
-            if ($error['type'] === 2) {
-                $lints[] = ['type' => 'Syntax Error', 'file' => $error['filepath'], 'message' => $error['message']];
-            }
+        foreach ($this->errors->getInvalidErrors() as $error) {
+            $lints[] = ['type' => 'Syntax Error', 'file' => $error->getFilePath(), 'message' => $error->getMessage()];
         }
 
         return $lints;
+    }
+
+    /**
+     * Get the analysis errors.
+     *
+     * @return array
+     */
+    public function errors()
+    {
+        $errors = [];
+
+        foreach ($this->errors->getNonInvalidErrors() as $error) {
+            $error[] = ['type' => 'Internal Error', 'file' => $error->getFilePath(), 'message' => $error->getMessage()];
+        }
+
+        return $errors;
     }
 }

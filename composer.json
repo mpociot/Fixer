@@ -17,10 +17,16 @@
             "email": "joe@alt-three.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "https://github.com/StyleCI/PHP-CS-Fixer"
+        }
+    ],
     "require": {
         "php": ">=5.5.9",
-        "fabpot/php-cs-fixer": "~1.9.1",
-        "styleci/config": "0.3.*",
+        "fabpot/php-cs-fixer": "~2.0.0",
+        "styleci/config": "0.4.*",
         "styleci/git": "0.3.*"
     },
     "require-dev": {

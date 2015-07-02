@@ -13,7 +13,7 @@ namespace StyleCI\Fixer;
 
 use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
-use Symfony\CS\LintManager;
+use Symfony\CS\Linter\LinterInterface;
 
 /**
  * This is the analyser class.
@@ -37,40 +37,23 @@ class Analyser
     protected $config;
 
     /**
-     * The errors manager instance.
-     *
-     * @var \Symfony\CS\ErrorsManager
-     */
-    protected $errors;
-
-    /**
-     * The lint manager instance.
-     *
-     * @var \Symfony\CS\LintManager
-     */
-    protected $lint;
-
-    /**
      * Create an new analyser instance.
      *
-     * @param \Symfony\CS\Fixer             $fixer
-     * @param \StyleCI\Fixer\ConfigResolver $config
-     * @param \Symfony\CS\ErrorsManager     $errors
-     * @param \Symfony\CS\LintManager       $lint
+     * @param \Symfony\CS\Fixer                  $fixer
+     * @param \StyleCI\Fixer\ConfigResolver      $config
+     * @param \Symfony\CS\Linter\LinterInterface $lint
      *
      * @return void
      */
-    public function __construct(Fixer $fixer, ConfigResolver $config, ErrorsManager $errors, LintManager $lint)
+    public function __construct(Fixer $fixer, ConfigResolver $config, LinterInterface $linter)
     {
         $this->fixer = $fixer;
         $this->config = $config;
-        $this->errors = $errors;
-        $this->lint = $lint;
+
+        $this->fixer->setLinter($linter);
 
         $this->fixer->registerBuiltInFixers();
         $this->fixer->registerBuiltInConfigs();
-        $this->fixer->setErrorsManager($errors);
-        $this->fixer->setLintManager($lint);
     }
 
     /**
@@ -78,7 +61,7 @@ class Analyser
      *
      * @param string $path
      *
-     * @return array
+     * @return \Symfony\CS\Error\ErrorsManager
      */
     public function analyse($path)
     {
@@ -86,6 +69,6 @@ class Analyser
 
         $this->fixer->fix($config);
 
-        return $this->errors->getErrors();
+        return $this->fixer->getErrorsManager();
     }
 }
