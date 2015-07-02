@@ -11,7 +11,6 @@
 
 namespace StyleCI\Fixer;
 
-use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
 use Symfony\CS\Linter\LinterInterface;
 
