@@ -17,7 +17,8 @@ use StyleCI\Config\ConfigFactory;
 use StyleCI\Config\Exceptions\InvalidFinderSetupException;
 use StyleCI\Config\FinderConfig;
 use Symfony\CS\Config\Config;
-use Symfony\CS\ConfigurationResolver;
+use Symfony\CS\Console\ConfigurationResolver;
+use Symfony\CS\Fixer;
 use Symfony\CS\FixerInterface;
 
 /**
@@ -49,16 +50,18 @@ class ConfigResolver
     /**
      * Get the php-cs-fixer config object for the repo at the given path.
      *
-     * @param string $path
-     * @param array  $fixers
+     * @param \Symfony\CS\Fixer $fixer
+     * @param string            $path
+     * @param string|false      $cache
      *
      * @throws \StyleCI\Config\Exceptions\InvalidFinderSetupException
      *
      * @return \Symfony\CS\Config\Config
      */
-    public function resolve($path, $fixers)
+    public function resolve(Fixer $fixer, $path, $cache = false)
     {
         $conf = $this->getConfigObject($path);
+
         $config = Config::create()->level(FixerInterface::NONE_LEVEL)->fixers($conf->getFixers());
 
         try {
@@ -70,10 +73,16 @@ class ConfigResolver
         $config->finder($finder->in($path));
         $config->setDir($path);
 
-        $resolver = new ConfigurationResolver();
-        $resolver->setAllFixers($fixers)->setConfig($config)->resolve();
+        $options = ['path' => $path, 'using-cache' => false];
 
-        $config->fixers($resolver->getFixers());
+        if ($cache) {
+            $options['using-cache'] = true;
+            $options['cache-file'] = $cache;
+        }
+
+        $resolver = new ConfigurationResolver();
+        $resolver->setDefaultConfig($config);
+        $resolver->setCwd($path)->setFixer($fixer)->setOptions($options)->resolve()
 
         return $config;
     }

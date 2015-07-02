@@ -61,8 +61,9 @@ class FixerServiceProvider extends ServiceProvider
         $this->app->singleton('fixer.builder', function ($app) {
             $factory = $app['git.factory'];
             $analyser = $app['fixer.analyser'];
+            $path = $app['path.storage'];
 
-            return new ReportBuilder($factory, $analyser);
+            return new ReportBuilder($factory, $analyser, $path);
         });
 
         $this->app->alias('fixer.builder', ReportBuilder::class);

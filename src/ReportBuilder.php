@@ -37,17 +37,26 @@ class ReportBuilder
     protected $analyser;
 
     /**
+     * The local storage path.
+     *
+     * @var string
+     */
+    protected $path;
+
+    /**
      * Create a new report builder instance.
      *
      * @param \StyleCI\Git\RepositoryFactory $factory
      * @param \StyleCI\Fixer\Analyser        $analyser
+     * @param string                         $path
      *
      * @return void
      */
-    public function __construct(RepositoryFactory $factory, Analyser $analyser)
+    public function __construct(RepositoryFactory $factory, Analyser $analyser, $path)
     {
         $this->factory = $factory;
         $this->analyser = $analyser;
+        $this->path = $path;
     }
 
     /**
@@ -63,13 +72,13 @@ class ReportBuilder
      *
      * @return \StyleCI\Fixer\Report
      */
-    public function analyse($name, $id, $commit, $branch, $pr)
+    public function analyse($name, $id, $commit, $branch, $pr, $default)
     {
-        $repo = $this->factory->make($name, (string) $id);
+        $repo = $this->factory->make($name, $path = "{$this->path}/repos/{$id}");
 
         $this->setup($repo, $commit, $branch, $pr);
 
-        $errors = $this->analyser->analyse($repo->path());
+        $errors = $this->analyser->analyse($path, $this->cache($id, $branch, $pr, $default));
 
         return new Report($repo->diff(), $errors);
     }
@@ -101,5 +110,36 @@ class ReportBuilder
         }
 
         $repo->reset($commit);
+    }
+
+    /**
+     * Prep the cache and get the cache file to use.
+     *
+     * @param int         $id
+     * @param string|null $branch
+     * @param int|null    $pr
+     * @param string      $default
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return string
+     */
+    protected function cache($id, $branch, $pr, $default)
+    {
+        $path = "{$this->path}/fixers/{$id}-";
+
+        if ($branch) {
+            $path .= "branch-{$branch}";
+        } elseif ($pr) {
+            $path .= "pr-{$branch}";
+        } else {
+            throw new InvalidArgumentException('Either a repo or pr must be provided.');
+        }
+
+        if (!file_exists($path) && file_exists($main = "{$this->path}/fixers/{$id}-branch-{$default}")) {
+            copy($main, $path);
+        }
+
+        return $path;
     }
 }
