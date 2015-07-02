@@ -80,7 +80,7 @@ class ReportBuilder
 
         $errors = $this->analyser->analyse($path, $this->cache($id, $branch, $pr, $default));
 
-        return new Report($repo->diff(), $errors);
+        return new Report($repo->diff(), $errors, $path);
     }
 
     /**

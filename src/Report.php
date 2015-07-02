@@ -36,17 +36,26 @@ class Report
     protected $errors;
 
     /**
+     * The location of the project on the disk.
+     *
+     * @var string
+     */
+    protected $path;
+
+    /**
      * Create a new report instance.
      *
      * @param \Gitonomy\Git\Diff\Diff         $diff
      * @param \Symfony\CS\Error\ErrorsManager $errors
+     * @param string                          $path
      *
      * @return void
      */
-    public function __construct(Diff $diff, ErrorsManager $errors)
+    public function __construct(Diff $diff, ErrorsManager $errors, $path)
     {
         $this->diff = $diff;
         $this->errors = $errors;
+        $this->path = $path;
     }
 
     /**
@@ -89,7 +98,7 @@ class Report
         $lints = [];
 
         foreach ($this->errors->getInvalidErrors() as $error) {
-            $lints[] = ['type' => 'Syntax Error', 'file' => $error->getFilePath(), 'message' => $error->getMessage()];
+            $lints[] = ['type' => 'Syntax Error', 'file' => $error->getFilePath(), 'message' => $this->sanitize($error->getMessage())];
         }
 
         return $lints;
@@ -105,9 +114,30 @@ class Report
         $errors = [];
 
         foreach ($this->errors->getNonInvalidErrors() as $error) {
-            $error[] = ['type' => 'Internal Error', 'file' => $error->getFilePath(), 'message' => $error->getMessage()];
+            $error[] = ['type' => 'Internal Error', 'file' => $error->getFilePath(), 'message' => $this->sanitize($error->getMessage())];
         }
 
         return $errors;
+    }
+
+    /**
+     * Sanitize the message for storage.
+     *
+     * We're removing all references to the location of the project on the
+     * disk here, removing any double spaces for readability, and ensuing the
+     * message ends in a full stop.
+     *
+     * @param string $message
+     *
+     * @return string
+     */
+    protected function sanitize($message)
+    {
+        $message = str_replace("{$this->path}/", '', $message);
+        $message = str_replace($this->path, '', $message);
+        $message = str_replace('  ', ' ', $message);
+        $message = trim(rtrim($message, '.!?'));
+
+        return "{$message}.";
     }
 }
