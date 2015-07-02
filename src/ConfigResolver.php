@@ -73,10 +73,10 @@ class ConfigResolver
         $config->finder($finder->in($path));
         $config->setDir($path);
 
-        $options = ['path' => $path, 'using-cache' => false];
+        $options = ['path' => $path, 'using-cache' => 'no'];
 
         if ($cache) {
-            $options['using-cache'] = true;
+            $options['using-cache'] = 'yes';
             $options['cache-file'] = $cache;
         }
 
