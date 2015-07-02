@@ -41,7 +41,7 @@ class Analyser
      *
      * @param \Symfony\CS\Fixer                  $fixer
      * @param \StyleCI\Fixer\ConfigResolver      $config
-     * @param \Symfony\CS\Linter\LinterInterface $lint
+     * @param \Symfony\CS\Linter\LinterInterface $linter
      *
      * @return void
      */
