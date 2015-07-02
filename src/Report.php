@@ -113,8 +113,12 @@ class Report
     {
         $errors = [];
 
-        foreach ($this->errors->getNonInvalidErrors() as $error) {
-            $error[] = ['type' => 'Internal Error', 'file' => $error->getFilePath(), 'message' => $this->sanitize($error->getMessage())];
+        foreach ($this->errors->getExceptionErrors() as $error) {
+            $error[] = ['type' => 'Failed To Fix', 'file' => $error->getFilePath(), 'message' => 'Something went wrong when we tried to fix '.$error->getFilePath().'.')];
+        }
+
+        foreach ($this->errors->getLintErrors() as $error) {
+            $error[] = ['type' => 'Broken File', 'file' => $error->getFilePath(), 'message' => $this->sanitize($error->getMessage())];
         }
 
         return $errors;
