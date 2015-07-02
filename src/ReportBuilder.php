@@ -69,9 +69,9 @@ class ReportBuilder
 
         $this->setup($repo, $commit, $branch, $pr);
 
-        $this->analyser->analyse($repo->path());
+        $errors = $this->analyser->analyse($repo->path());
 
-        return new Report($repo->diff());
+        return new Report($repo->diff(), $errors);
     }
 
     /**

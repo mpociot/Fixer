@@ -28,15 +28,24 @@ class Report
     protected $diff;
 
     /**
-     * Create a report instance.
+     * The analysis errors.
+     *
+     * @var array
+     */
+    protected $errors;
+
+    /**
+     * Create a new report instance.
      *
      * @param \Gitonomy\Git\Diff\Diff $diff
+     * @param array                   $errors
      *
      * @return void
      */
-    public function __construct(Diff $diff)
+    public function __construct(Diff $diff, array $errors)
     {
         $this->diff = $diff;
+        $this->errors = $errors;
     }
 
     /**
@@ -67,5 +76,41 @@ class Report
     public function successful()
     {
         return empty($this->diff->getFiles());
+    }
+
+    /**
+     * Get the exceptions.
+     *
+     * @return array
+     */
+    public function exceptions()
+    {
+        $exceptions = [];
+
+        foreach ($this->errors as $error) {
+            if ($error['type'] === 1) {
+                $exceptions[] = ['file' => $error['filepath'], 'message' => $error['message']];
+            }
+        }
+
+        return $exceptions;
+    }
+
+    /**
+     * Get the linting errors.
+     *
+     * @return array
+     */
+    public function lints()
+    {
+        $lints = [];
+
+        foreach ($this->errors as $error) {
+            if ($error['type'] === 2) {
+                $lints[] = ['file' => $error['filepath'], 'message' => $error['message']];
+            }
+        }
+
+        return $lints;
     }
 }

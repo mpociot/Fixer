@@ -12,7 +12,9 @@
 namespace StyleCI\Fixer;
 
 use Illuminate\Support\ServiceProvider;
+use Symfony\CS\ErrorsManager;
 use Symfony\CS\Fixer;
+use Symfony\CS\LintManager;
 
 /**
  * This is the fixer service provider class.
@@ -42,8 +44,10 @@ class FixerServiceProvider extends ServiceProvider
         $this->app->singleton('fixer.analyser', function ($app) {
             $fixer = new Fixer();
             $config = new ConfigResolver($app['config.factory']);
+            $errors = new ErrorsManager();
+            $lint = new LintManager();
 
-            return new Analyser($fixer, $config);
+            return new Analyser($fixer, $config, $errors, $lint);
         });
 
         $this->app->alias('fixer.analyser', Analyser::class);
