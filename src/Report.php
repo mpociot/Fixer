@@ -89,7 +89,7 @@ class Report
 
         foreach ($this->errors as $error) {
             if ($error['type'] === 1) {
-                $exceptions[] = ['file' => $error['filepath'], 'message' => $error['message']];
+                $exceptions[] = ['type' => 'Internal Error', 'file' => $error['filepath'], 'message' => $error['message']];
             }
         }
 
@@ -107,7 +107,7 @@ class Report
 
         foreach ($this->errors as $error) {
             if ($error['type'] === 2) {
-                $lints[] = ['file' => $error['filepath'], 'message' => $error['message']];
+                $lints[] = ['type' => 'Syntax Error', 'file' => $error['filepath'], 'message' => $error['message']];
             }
         }
 
