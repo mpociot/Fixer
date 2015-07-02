@@ -79,21 +79,21 @@ class Report
     }
 
     /**
-     * Get the exceptions.
+     * Get the analysis errors.
      *
      * @return array
      */
-    public function exceptions()
+    public function errors()
     {
-        $exceptions = [];
+        $errors = [];
 
         foreach ($this->errors as $error) {
             if ($error['type'] === 1) {
-                $exceptions[] = ['type' => 'Internal Error', 'file' => $error['filepath'], 'message' => $error['message']];
+                $error[] = ['type' => 'Internal Error', 'file' => $error['filepath'], 'message' => $error['message']];
             }
         }
 
-        return $exceptions;
+        return $errors;
     }
 
     /**
