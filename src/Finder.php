@@ -22,7 +22,7 @@ use Symfony\CS\FinderInterface;
 class Finder extends SymfonyFinder implements FinderInterface
 {
     /**
-     * Create a finder instance.
+     * Create a new finder instance.
      *
      * @return void
      */
