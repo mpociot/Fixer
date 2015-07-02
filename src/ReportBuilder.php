@@ -126,7 +126,7 @@ class ReportBuilder
      */
     protected function cache($id, $branch, $pr, $default)
     {
-        $path = "{$this->path}/fixers/{$id}"
+        $path = "{$this->path}/fixers/{$id}";
 
         if (!is_dir($path)) {
             mkdir($path);
