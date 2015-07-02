@@ -37,7 +37,7 @@ class ReportBuilder
     protected $analyser;
 
     /**
-     * Create a report builder instance.
+     * Create a new report builder instance.
      *
      * @param \StyleCI\Git\RepositoryFactory $factory
      * @param \StyleCI\Fixer\Analyser        $analyser
