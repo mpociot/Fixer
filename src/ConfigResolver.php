@@ -82,7 +82,7 @@ class ConfigResolver
 
         $resolver = new ConfigurationResolver();
         $resolver->setDefaultConfig($config);
-        $resolver->setCwd($path)->setFixer($fixer)->setOptions($options)->resolve()
+        $resolver->setCwd($path)->setFixer($fixer)->setOptions($options)->resolve();
 
         return $config;
     }
