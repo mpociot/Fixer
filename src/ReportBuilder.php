@@ -126,17 +126,21 @@ class ReportBuilder
      */
     protected function cache($id, $branch, $pr, $default)
     {
-        $path = "{$this->path}/fixers/{$id}-";
+        $path = "{$this->path}/fixers/{$id}"
+
+        if (!is_dir($path)) {
+            mkdir($path);
+        }
 
         if ($branch) {
-            $path .= "branch-{$branch}";
+            $path .= "/branch-{$branch}";
         } elseif ($pr) {
-            $path .= "pr-{$branch}";
+            $path .= "/pr-{$pr}";
         } else {
             throw new InvalidArgumentException('Either a repo or pr must be provided.');
         }
 
-        if (!file_exists($path) && file_exists($main = "{$this->path}/fixers/{$id}-branch-{$default}")) {
+        if (!file_exists($path) && file_exists($main = "{$this->path}/fixers/{$id}/branch-{$default}")) {
             copy($main, $path);
         }
 
