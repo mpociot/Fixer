@@ -50,7 +50,6 @@ class Analyser
      */
     protected $lint;
 
-
     /**
      * Create an new analyser instance.
      *
