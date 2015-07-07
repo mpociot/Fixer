@@ -98,6 +98,7 @@ class ReportBuilder
         if ($key) {
             $path = "{$this->path}/key";
             file_put_contents($path, $key);
+            chmod($path, 0600);
 
             return $path;
         }
