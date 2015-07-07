@@ -129,7 +129,7 @@ class ReportBuilder
         $path = "{$this->path}/fixers/{$id}";
 
         if (!is_dir($path)) {
-            mkdir($path);
+            mkdir($path, 0777, true);
         }
 
         if ($branch) {
