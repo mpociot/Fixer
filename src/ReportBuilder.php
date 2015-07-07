@@ -69,18 +69,38 @@ class ReportBuilder
      * @param string      $commit
      * @param string|null $branch
      * @param int|null    $pr
+     * @param string|null $key
      *
      * @return \StyleCI\Fixer\Report
      */
-    public function analyse($name, $id, $commit, $branch, $pr, $default)
+    public function analyse($name, $id, $commit, $branch, $pr, $default, $key = null)
     {
-        $repo = $this->factory->make($name, $path = "{$this->path}/repos/{$id}");
+        $repo = $this->factory->make($name, $path = "{$this->path}/repos/{$id}", $this->getKeyPath($key));
 
         $this->setup($repo, $commit, $branch, $pr);
 
-        $errors = $this->analyser->analyse($path, $this->cache($id, $branch, $pr, $default));
+        $errors = $this->analyser->analyse($path, $this->cacheCachePath($id, $branch, $pr, $default));
 
         return new Report($repo->diff(), $errors, $path);
+    }
+
+    /**
+     * Save the private key and return its path.
+     *
+     * If no key is provided, then we do nothing and return nothing.
+     *
+     * @param string|null $key
+     *
+     * @return string|null
+     */
+    protected function getKeyPath($key = null)
+    {
+        if ($key) {
+            $path = "{$this->path}/key";
+            file_put_contents($path, $key);
+
+            return $path;
+        }
     }
 
     /**
@@ -102,9 +122,9 @@ class ReportBuilder
         }
 
         if ($branch) {
-            $repo->fetch(['origin', "refs/heads/$branch"]);
+            $repo->fetch("refs/heads/$branch");
         } elseif ($pr) {
-            $repo->fetch(['origin', "refs/pull/$pr/head"]);
+            $repo->fetch("refs/pull/$pr/head");
         } else {
             throw new InvalidArgumentException('Either a repo or pr must be provided.');
         }
@@ -124,7 +144,7 @@ class ReportBuilder
      *
      * @return string
      */
-    protected function cache($id, $branch, $pr, $default)
+    protected function cacheCachePath($id, $branch, $pr, $default)
     {
         $path = "{$this->path}/fixers/{$id}";
 
