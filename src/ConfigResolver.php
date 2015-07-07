@@ -65,7 +65,7 @@ class ConfigResolver
             throw new InvalidFinderSetupException($e);
         }
 
-        $enabled = []
+        $enabled = [];
         $names = $conf->getFixers();
 
         foreach ($fixers as $fixer) {
