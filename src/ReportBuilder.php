@@ -79,7 +79,7 @@ class ReportBuilder
 
         $this->setup($repo, $commit, $branch, $pr);
 
-        $errors = $this->analyser->analyse($path, $this->cacheCachePath($id, $branch, $pr, $default));
+        $errors = $this->analyser->analyse($path, $this->getCachePath($id, $branch, $pr, $default));
 
         return new Report($repo->diff(), $errors, $path);
     }
@@ -144,7 +144,7 @@ class ReportBuilder
      *
      * @return string
      */
-    protected function cacheCachePath($id, $branch, $pr, $default)
+    protected function getCachePath($id, $branch, $pr, $default)
     {
         $path = "{$this->path}/fixers/{$id}";
 
