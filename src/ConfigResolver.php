@@ -17,9 +17,6 @@ use StyleCI\Config\ConfigFactory;
 use StyleCI\Config\Exceptions\InvalidFinderSetupException;
 use StyleCI\Config\FinderConfig;
 use Symfony\CS\Config\Config;
-use Symfony\CS\Console\ConfigurationResolver;
-use Symfony\CS\Fixer;
-use Symfony\CS\FixerInterface;
 
 /**
  * This is the fixer resolver class.
@@ -50,19 +47,17 @@ class ConfigResolver
     /**
      * Get the php-cs-fixer config object for the repo at the given path.
      *
-     * @param \Symfony\CS\Fixer $fixer
-     * @param string            $path
-     * @param string|false      $cache
+     * @param \Symfony\CS\FixerInterface[] $fixers
+     * @param string                       $path
+     * @param string|false                 $cache
      *
      * @throws \StyleCI\Config\Exceptions\InvalidFinderSetupException
      *
      * @return \Symfony\CS\Config\Config
      */
-    public function resolve(Fixer $fixer, $path, $cache = false)
+    public function resolve(array $fixers, $path, $cache = false)
     {
         $conf = $this->getConfigObject($path);
-
-        $config = Config::create()->level(FixerInterface::NONE_LEVEL)->fixers($conf->getFixers());
 
         try {
             $finder = $this->getFinderObject($conf);
@@ -70,19 +65,23 @@ class ConfigResolver
             throw new InvalidFinderSetupException($e);
         }
 
-        $config->finder($finder->in($path));
-        $config->setDir($path);
+        $enabled = []
+        $names = $conf->getFixers();
 
-        $options = ['path' => $path, 'using-cache' => 'no'];
-
-        if ($cache) {
-            $options['using-cache'] = 'yes';
-            $options['cache-file'] = $cache;
+        foreach ($fixers as $fixer) {
+            if (in_array($fixer->getName(), $names, true)) {
+                $enabled[] = $fixer;
+            }
         }
 
-        $resolver = new ConfigurationResolver();
-        $resolver->setDefaultConfig($config);
-        $resolver->setCwd($path)->setFixer($fixer)->setOptions($options)->resolve();
+        $config = Config::create()->finder($finder->in($path))->setDir($path)->fixers($enabled);
+
+        if ($cache) {
+            $config->setUsingCache(true);
+            $config->setCacheFile($cache);
+        } else {
+            $config->setUsingCache(false);
+        }
 
         return $config;
     }

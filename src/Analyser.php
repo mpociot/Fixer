@@ -65,7 +65,7 @@ class Analyser
      */
     public function analyse($path, $cache)
     {
-        $config = $this->config->resolve($this->fixer, $path, $cache);
+        $config = $this->config->resolve($this->fixer->getFixers(), $path, $cache);
 
         $this->fixer->fix($config);
 
