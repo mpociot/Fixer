@@ -137,6 +137,8 @@ class Report
      */
     protected function sanitize($message)
     {
+        $real = realpath($this->path);
+        $message = str_replace("{$real}/", '', $message);
         $message = str_replace("{$this->path}/", '', $message);
         $message = str_replace($this->path, '', $message);
         $message = str_replace('  ', ' ', $message);
