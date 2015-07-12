@@ -11,10 +11,8 @@
 
 namespace StyleCI\Fixer;
 
-use Exception;
 use StyleCI\Config\Config as Conf;
 use StyleCI\Config\ConfigFactory;
-use StyleCI\Config\Exceptions\InvalidFinderSetupException;
 use StyleCI\Config\FinderConfig;
 use Symfony\CS\Config\Config;
 
@@ -51,19 +49,12 @@ class ConfigResolver
      * @param string                       $path
      * @param string|false                 $cache
      *
-     * @throws \StyleCI\Config\Exceptions\InvalidFinderSetupException
-     *
      * @return \Symfony\CS\Config\Config
      */
     public function resolve(array $fixers, $path, $cache = false)
     {
         $conf = $this->getConfigObject($path);
-
-        try {
-            $finder = $this->getFinderObject($conf);
-        } catch (Exception $e) {
-            throw new InvalidFinderSetupException($e);
-        }
+        $finder = $this->getFinderObject($conf);
 
         $enabled = [];
         $names = $conf->getFixers();
@@ -74,7 +65,7 @@ class ConfigResolver
             }
         }
 
-        $config = Config::create()->finder($finder->setDir($path))->setDir($path)->fixers($enabled);
+        $config = Config::create()->finder($finder)->setDir($path)->fixers($enabled);
 
         if ($cache) {
             $config->setUsingCache(true);
