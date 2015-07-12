@@ -141,7 +141,6 @@ class ConfigResolver
      */
     protected function configureFinder(FinderConfig $finderConfig, Finder $finder)
     {
-        $finder->in($finderConfig->getIn());
         $finder->exclude($finderConfig->getExclude());
 
         foreach ((array) $finderConfig->getName() as $pattern) {
@@ -170,10 +169,6 @@ class ConfigResolver
 
         foreach ((array) $finderConfig->getDepth() as $depth) {
             $finder->depth($depth);
-        }
-
-        foreach ((array) $finderConfig->getDate() as $date) {
-            $finder->date($date);
         }
     }
 }
