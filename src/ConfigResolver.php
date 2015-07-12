@@ -54,7 +54,7 @@ class ConfigResolver
      */
     public function resolve(array $fixers, $path, $cache = false, $config = null)
     {
-        $conf = $this->getConfigObject($path);
+        $conf = $this->getConfigObject($path, $config);
         $finder = $this->getFinderObject($conf);
 
         $enabled = [];
