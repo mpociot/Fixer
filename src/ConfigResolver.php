@@ -48,10 +48,11 @@ class ConfigResolver
      * @param \Symfony\CS\FixerInterface[] $fixers
      * @param string                       $path
      * @param string|false                 $cache
+     * @param string|null                  $config
      *
      * @return \Symfony\CS\Config\Config
      */
-    public function resolve(array $fixers, $path, $cache = false)
+    public function resolve(array $fixers, $path, $cache = false, $config = null)
     {
         $conf = $this->getConfigObject($path);
         $finder = $this->getFinderObject($conf);
@@ -80,15 +81,18 @@ class ConfigResolver
     /**
      * Get the styleci config object for the repo at the given path.
      *
-     * @param string $path
+     * @param string      $path
+     * @param string|null $config
      *
      * @return \StyleCI\Config\Config
      */
-    protected function getConfigObject($path)
+    protected function getConfigObject($path, $config = null)
     {
-        $configPath = $path.'/.styleci.yml';
+        if ($config) {
+            return $this->factory->makeFromYaml($config);
+        }
 
-        if (file_exists($configPath)) {
+        if (file_exists($configPath = $path.'/.styleci.yml')) {
             return $this->factory->makeFromYaml(file_get_contents($configPath));
         }
 

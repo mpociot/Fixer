@@ -71,16 +71,17 @@ class ReportBuilder
      * @param string|null $branch
      * @param int|null    $pr
      * @param string|null $key
+     * @param string|null $config
      *
      * @return \StyleCI\Fixer\Report
      */
-    public function analyse($name, $id, $commit, $branch, $pr, $default, $key = null)
+    public function analyse($name, $id, $commit, $branch, $pr, $default, $key = null, $config = null)
     {
         $repo = $this->factory->make($name, $path = "{$this->path}/repos/{$id}", $this->getKeyPath($key));
 
         $this->setup($repo, $commit, $branch, $pr);
 
-        $errors = $this->getAnalyser()->analyse($path, $this->getCachePath($id, $branch, $pr, $default));
+        $errors = $this->getAnalyser()->analyse($path, $this->getCachePath($id, $branch, $pr, $default), $config);
 
         return new Report($repo->diff(), $errors, $path);
     }
