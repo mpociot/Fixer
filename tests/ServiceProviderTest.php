@@ -56,7 +56,7 @@ class ServiceProviderTest extends AbstractPackageTestCase
         $this->assertIsInjectable(ReportBuilder::class);
     }
 
-    public function testAnalyserIsAlwaysTheSame()
+    public function testReportBuilderIsAlwaysTheSame()
     {
         $this->assertSame($this->app->make(ReportBuilder::class), $this->app->make(ReportBuilder::class));
     }
