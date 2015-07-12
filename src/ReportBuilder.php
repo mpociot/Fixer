@@ -11,6 +11,7 @@
 
 namespace StyleCI\Fixer;
 
+use Closure;
 use InvalidArgumentException;
 use StyleCI\Git\Repositories\RepositoryInterface;
 use StyleCI\Git\RepositoryFactory;
@@ -30,9 +31,9 @@ class ReportBuilder
     protected $factory;
 
     /**
-     * The cs analyser instance.
+     * The analyser resolver.
      *
-     * @var \StyleCI\Fixer\Analyser
+     * @var \Closure
      */
     protected $analyser;
 
@@ -47,12 +48,12 @@ class ReportBuilder
      * Create a new report builder instance.
      *
      * @param \StyleCI\Git\RepositoryFactory $factory
-     * @param \StyleCI\Fixer\Analyser        $analyser
+     * @param \Closure                       $analyser
      * @param string                         $path
      *
      * @return void
      */
-    public function __construct(RepositoryFactory $factory, Analyser $analyser, $path)
+    public function __construct(RepositoryFactory $factory, Closure $analyser, $path)
     {
         $this->factory = $factory;
         $this->analyser = $analyser;
@@ -79,7 +80,7 @@ class ReportBuilder
 
         $this->setup($repo, $commit, $branch, $pr);
 
-        $errors = $this->analyser->analyse($path, $this->getCachePath($id, $branch, $pr, $default));
+        $errors = $this->getAnalyser()->analyse($path, $this->getCachePath($id, $branch, $pr, $default));
 
         return new Report($repo->diff(), $errors, $path);
     }
@@ -131,6 +132,18 @@ class ReportBuilder
         }
 
         $repo->reset($commit);
+    }
+
+    /**
+     * Get a new analyser instance.
+     *
+     * @return \StyleCI\Fixer\Analyser
+     */
+    public function getAnalyser()
+    {
+        $resolver = $this->analyser;
+
+        return $resolver();
     }
 
     /**

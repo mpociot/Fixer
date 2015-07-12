@@ -40,7 +40,7 @@ class FixerServiceProvider extends ServiceProvider
      */
     protected function registerAnalyser()
     {
-        $this->app->singleton('fixer.analyser', function ($app) {
+        $this->app->bind('fixer.analyser', function ($app) {
             $fixer = new Fixer();
             $config = new ConfigResolver($app['config.factory']);
             $linter = new Linter();
@@ -60,7 +60,9 @@ class FixerServiceProvider extends ServiceProvider
     {
         $this->app->singleton('fixer.builder', function ($app) {
             $factory = $app['git.factory'];
-            $analyser = $app['fixer.analyser'];
+            $analyser = function () use ($app) {
+                return $app['fixer.analyser'];
+            };
             $path = $app['path.storage'];
 
             return new ReportBuilder($factory, $analyser, $path);
