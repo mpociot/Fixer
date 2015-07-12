@@ -74,7 +74,7 @@ class ConfigResolver
             }
         }
 
-        $config = Config::create()->finder($finder->in($path))->setDir($path)->fixers($enabled);
+        $config = Config::create()->finder($finder->setDir($path))->setDir($path)->fixers($enabled);
 
         if ($cache) {
             $config->setUsingCache(true);
