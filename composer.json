@@ -26,8 +26,8 @@
     "require": {
         "php": ">=5.5.9",
         "fabpot/php-cs-fixer": "~2.0.0",
-        "styleci/config": "0.4.*",
-        "styleci/git": "0.3.*"
+        "styleci/config": "~1.0",
+        "styleci/git": "~1.0"
     },
     "require-dev": {
         "graham-campbell/testbench": "~3.0",
@@ -51,7 +51,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.5-dev"
+            "dev-master": "1.0-dev"
         }
     },
     "minimum-stability": "dev",
