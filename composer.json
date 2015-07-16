@@ -26,6 +26,7 @@
     "require": {
         "php": ">=5.5.9",
         "fabpot/php-cs-fixer": "~2.0.0",
+        "styleci/cache": "~1.0",
         "styleci/config": "~1.0",
         "styleci/git": "~1.0"
     },

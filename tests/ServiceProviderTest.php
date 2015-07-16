@@ -13,6 +13,7 @@ namespace StyleCI\Tests\Fixer;
 
 use GrahamCampbell\TestBench\AbstractPackageTestCase;
 use GrahamCampbell\TestBenchCore\ServiceProviderTrait;
+use StyleCI\Cache\CacheServiceProvider;
 use StyleCI\Config\ConfigServiceProvider;
 use StyleCI\Fixer\Analyser;
 use StyleCI\Fixer\FixerServiceProvider;
@@ -31,6 +32,7 @@ class ServiceProviderTest extends AbstractPackageTestCase
     protected function getRequiredServiceProviders($app)
     {
         return [
+            CacheServiceProvider::class,
             ConfigServiceProvider::class,
             GitServiceProvider::class,
         ];

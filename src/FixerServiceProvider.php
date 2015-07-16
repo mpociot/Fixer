@@ -63,9 +63,10 @@ class FixerServiceProvider extends ServiceProvider
             $analyser = function () use ($app) {
                 return $app['fixer.analyser'];
             };
+            $cache = $app['cache.resolver'];
             $path = $app['path.storage'];
 
-            return new ReportBuilder($factory, $analyser, $path);
+            return new ReportBuilder($factory, $analyser, $cache, $path);
         });
 
         $this->app->alias('fixer.builder', ReportBuilder::class);
