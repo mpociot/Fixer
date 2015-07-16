@@ -27,7 +27,7 @@ If you're using Laravel 5, then you can register our service provider. Open up `
 
 ## Documentation
 
-StyleCI Fixer was created by, and is maintained by [Graham Campbell](https://github.com/GrahamCampbell), and is a code style report builder.
+StyleCI Fixer is a code style report builder.
 
 Feel free to check out the [releases](https://github.com/StyleCI/Fixer/releases), [license](LICENSE), and [contribution guidelines](CONTRIBUTING.md).
 
