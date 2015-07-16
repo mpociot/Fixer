@@ -90,7 +90,7 @@ class ReportBuilder
         $repo = $this->factory->make($name, $path = "{$this->path}/repos/{$id}", $this->getKeyPath($key));
         $this->setup($repo, $commit, $branch, $pr);
 
-        $name = $this->getName($id, $branch, $pr, $default);
+        $name = $this->getName($branch, $pr);
         $this->cache->setUp($id, $name, "branch.{$default}");
 
         $errors = $this->getAnalyser()->analyse($path, $this->cache->path(), $config);
@@ -125,16 +125,14 @@ class ReportBuilder
     /**
      * Get the name to use in the cache.
      *
-     * @param int         $id
      * @param string|null $branch
      * @param int|null    $pr
-     * @param string      $default
      *
      * @throws \InvalidArgumentException
      *
      * @return string
      */
-    protected function getName($id, $branch, $pr, $default)
+    protected function getName($branch, $pr)
     {
         if ($branch) {
             return "branch.{$branch}";
@@ -144,7 +142,7 @@ class ReportBuilder
             return "pr.{$pr}";
         }
 
-        throw new InvalidArgumentException('Either a repo or pr must be provided.');
+        throw new InvalidArgumentException('Either a branch name or PR number provided.');
     }
 
     /**
@@ -154,13 +152,12 @@ class ReportBuilder
      * @param string                                        $commit
      * @param string|null                                   $branch
      * @param int|null                                      $pr
-     * @param string                                        $name
      *
      * @throws \InvalidArgumentException
      *
      * @return void
      */
-    protected function setup(RepositoryInterface $repo, $commit, $branch, $pr, $name)
+    protected function setup(RepositoryInterface $repo, $commit, $branch, $pr)
     {
         if (!$repo->exists()) {
             $repo->get();
@@ -171,7 +168,7 @@ class ReportBuilder
         } elseif ($pr) {
             $repo->fetch("refs/pull/$pr/head");
         } else {
-            throw new InvalidArgumentException('Either a repo or pr must be provided.');
+            throw new InvalidArgumentException('Either a branch name or PR number provided.');
         }
 
         $repo->reset($commit);
