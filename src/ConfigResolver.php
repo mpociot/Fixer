@@ -65,6 +65,8 @@ class ConfigResolver
         if ($header) {
             $names[] = 'header_comment';
             HeaderCommentFixer::setHeader($header);
+        } else {
+            HeaderCommentFixer::setHeader('');
         }
 
         foreach ($fixers as $fixer) {
