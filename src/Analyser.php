@@ -61,12 +61,13 @@ class Analyser
      * @param string       $path
      * @param string|false $cache
      * @param string|null  $config
+     * @param string|null  $header
      *
      * @return \Symfony\CS\Error\ErrorsManager
      */
-    public function analyse($path, $cache = false, $config = null)
+    public function analyse($path, $cache = false, $config = null, $header = null)
     {
-        $config = $this->config->resolve($this->fixer->getFixers(), $path, $cache, $config);
+        $config = $this->config->resolve($this->fixer->getFixers(), $path, $cache, $config, $header);
 
         $this->fixer->fix($config);
 

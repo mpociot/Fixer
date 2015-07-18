@@ -15,6 +15,7 @@ use StyleCI\Config\Config as Conf;
 use StyleCI\Config\ConfigFactory;
 use StyleCI\Config\FinderConfig;
 use Symfony\CS\Config\Config;
+use Symfony\CS\Fixer\Contrib\HeaderCommentFixer;
 
 /**
  * This is the fixer resolver class.
@@ -49,16 +50,22 @@ class ConfigResolver
      * @param string                       $path
      * @param string|false                 $cache
      * @param string|null                  $config
+     * @param string|null                  $header
      *
      * @return \Symfony\CS\Config\Config
      */
-    public function resolve(array $fixers, $path, $cache = false, $config = null)
+    public function resolve(array $fixers, $path, $cache = false, $config = null, $header = null)
     {
         $conf = $this->getConfigObject($path, $config);
         $finder = $this->getFinderObject($conf);
 
         $enabled = [];
         $names = $conf->getFixers();
+
+        if ($header) {
+            $names[] = 'header_comment';
+            HeaderCommentFixer::setHeader($header);
+        }
 
         foreach ($fixers as $fixer) {
             if (in_array($fixer->getName(), $names, true)) {
