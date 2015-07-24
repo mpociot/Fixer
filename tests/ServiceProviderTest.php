@@ -15,7 +15,7 @@ use GrahamCampbell\TestBench\AbstractPackageTestCase;
 use GrahamCampbell\TestBenchCore\ServiceProviderTrait;
 use StyleCI\Cache\CacheServiceProvider;
 use StyleCI\Config\ConfigServiceProvider;
-use StyleCI\Fixer\Analyser;
+use StyleCI\Fixer\Analyzer;
 use StyleCI\Fixer\FixerServiceProvider;
 use StyleCI\Fixer\ReportBuilder;
 use StyleCI\Git\GitServiceProvider;
@@ -43,14 +43,14 @@ class ServiceProviderTest extends AbstractPackageTestCase
         return FixerServiceProvider::class;
     }
 
-    public function testAnalyserIsInjectable()
+    public function testAnalyzerIsInjectable()
     {
-        $this->assertIsInjectable(Analyser::class);
+        $this->assertIsInjectable(Analyzer::class);
     }
 
-    public function testAnalyserIsAlwaysDifferent()
+    public function testAnalyzerIsAlwaysDifferent()
     {
-        $this->assertNotSame($this->app->make(Analyser::class), $this->app->make(Analyser::class));
+        $this->assertNotSame($this->app->make(Analyzer::class), $this->app->make(Analyzer::class));
     }
 
     public function testReportBuilderIsInjectable()

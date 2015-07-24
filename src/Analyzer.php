@@ -15,11 +15,11 @@ use Symfony\CS\Fixer;
 use Symfony\CS\Linter\LinterInterface;
 
 /**
- * This is the analyser class.
+ * This is the analyzer class.
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
-class Analyser
+class Analyzer
 {
     /**
      * The cs fixer instance.
@@ -36,7 +36,7 @@ class Analyser
     protected $config;
 
     /**
-     * Create an new analyser instance.
+     * Create an new analyzer instance.
      *
      * @param \Symfony\CS\Fixer                  $fixer
      * @param \StyleCI\Fixer\ConfigResolver      $config
@@ -56,7 +56,7 @@ class Analyser
     }
 
     /**
-     * Analyse the project.
+     * Analyze the project.
      *
      * @param string       $path
      * @param string|false $cache
@@ -65,7 +65,7 @@ class Analyser
      *
      * @return \Symfony\CS\Error\ErrorsManager
      */
-    public function analyse($path, $cache = false, $config = null, $header = null)
+    public function analyze($path, $cache = false, $config = null, $header = null)
     {
         $config = $this->config->resolve($this->fixer->getFixers(), $path, $cache, $config, $header);
 

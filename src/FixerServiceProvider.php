@@ -29,26 +29,26 @@ class FixerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerAnalyser();
+        $this->registerAnalyzer();
         $this->registerReportBuilder();
     }
 
     /**
-     * Register the analyser class.
+     * Register the analyzer class.
      *
      * @return void
      */
-    protected function registerAnalyser()
+    protected function registerAnalyzer()
     {
-        $this->app->bind('fixer.analyser', function ($app) {
+        $this->app->bind('fixer.analyzer', function ($app) {
             $fixer = new Fixer();
             $config = new ConfigResolver($app['config.factory']);
             $linter = new Linter();
 
-            return new Analyser($fixer, $config, $linter);
+            return new Analyzer($fixer, $config, $linter);
         });
 
-        $this->app->alias('fixer.analyser', Analyser::class);
+        $this->app->alias('fixer.analyzer', Analyzer::class);
     }
 
     /**
@@ -60,13 +60,13 @@ class FixerServiceProvider extends ServiceProvider
     {
         $this->app->singleton('fixer.builder', function ($app) {
             $factory = $app['git.factory'];
-            $analyser = function () use ($app) {
-                return $app['fixer.analyser'];
+            $analyzer = function () use ($app) {
+                return $app['fixer.analyzer'];
             };
             $cache = $app['cache.resolver'];
             $path = $app['path.storage'];
 
-            return new ReportBuilder($factory, $analyser, $cache, $path);
+            return new ReportBuilder($factory, $analyzer, $cache, $path);
         });
 
         $this->app->alias('fixer.builder', ReportBuilder::class);
@@ -80,7 +80,7 @@ class FixerServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
-            'fixer.analyser',
+            'fixer.analyzer',
             'fixer.builder',
         ];
     }

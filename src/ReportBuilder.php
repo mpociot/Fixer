@@ -32,11 +32,11 @@ class ReportBuilder
     protected $factory;
 
     /**
-     * The analyser resolver.
+     * The analyzer resolver.
      *
      * @var \Closure
      */
-    protected $analyser;
+    protected $analyzer;
 
     /**
      * The cache resolver instance.
@@ -56,22 +56,22 @@ class ReportBuilder
      * Create a new report builder instance.
      *
      * @param \StyleCI\Git\RepositoryFactory $factory
-     * @param \Closure                       $analyser
+     * @param \Closure                       $analyzer
      * @param \StyleCI\Cache\CacheResolver   $cache
      * @param string                         $path
      *
      * @return void
      */
-    public function __construct(RepositoryFactory $factory, Closure $analyser, CacheResolver $cache, $path)
+    public function __construct(RepositoryFactory $factory, Closure $analyzer, CacheResolver $cache, $path)
     {
         $this->factory = $factory;
-        $this->analyser = $analyser;
+        $this->analyzer = $analyzer;
         $this->cache = $cache;
         $this->path = $path;
     }
 
     /**
-     * Analyse the commit and return the results.
+     * Analyze the commit and return the results.
      *
      * Note that you must provide either a branch or a pr, but not both.
      *
@@ -86,7 +86,7 @@ class ReportBuilder
      *
      * @return \StyleCI\Fixer\Report
      */
-    public function analyse($name, $id, $commit, $branch, $pr, $default, $key = null, $config = null, $header = null)
+    public function analyze($name, $id, $commit, $branch, $pr, $default, $key = null, $config = null, $header = null)
     {
         $repo = $this->factory->make($name, $path = "{$this->path}/repos/{$id}", $this->getKeyPath($key));
         $this->setup($repo, $commit, $branch, $pr);
@@ -94,7 +94,7 @@ class ReportBuilder
         $name = $this->getName($branch, $pr);
         $this->cache->setUp($id, $name, "branch.{$default}");
 
-        $errors = $this->getAnalyser()->analyse($path, $this->cache->path(), $config, $header);
+        $errors = $this->getAnalyzer()->analyze($path, $this->cache->path(), $config, $header);
 
         $this->cache->tearDown($id, $name);
 
@@ -176,13 +176,13 @@ class ReportBuilder
     }
 
     /**
-     * Get a new analyser instance.
+     * Get a new analyzer instance.
      *
-     * @return \StyleCI\Fixer\Analyser
+     * @return \StyleCI\Fixer\Analyzer
      */
-    public function getAnalyser()
+    public function getAnalyzer()
     {
-        $resolver = $this->analyser;
+        $resolver = $this->analyzer;
 
         return $resolver();
     }
