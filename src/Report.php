@@ -164,7 +164,7 @@ class Report
         $message = str_replace($path, '', $message);
 
         if (substr_count($path, '/') > 2) {
-            return $this->sanitizePaths($message, substr(strrpos($path, '/'), 0, $pos));
+            return $this->sanitizePaths($message, substr($path, 0, strrpos($path, '/')));
         }
 
         return $message;
