@@ -114,11 +114,11 @@ class Report
         $errors = [];
 
         foreach ($this->errors->getExceptionErrors() as $error) {
-            $error[] = ['type' => 'Failed To Fix', 'file' => $error->getFilePath(), 'message' => 'Something went wrong when we tried to fix '.$error->getFilePath().'.'];
+            $errors[] = ['type' => 'Failed To Fix', 'file' => $error->getFilePath(), 'message' => 'Something went wrong when we tried to fix '.$error->getFilePath().'.'];
         }
 
         foreach ($this->errors->getLintErrors() as $error) {
-            $error[] = ['type' => 'Broken File', 'file' => $error->getFilePath(), 'message' => $this->sanitize($error->getMessage())];
+            $errors[] = ['type' => 'Broken File', 'file' => $error->getFilePath(), 'message' => $this->sanitize($error->getMessage())];
         }
 
         return $errors;
