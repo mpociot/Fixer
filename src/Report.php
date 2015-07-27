@@ -98,7 +98,7 @@ class Report
         $lints = [];
 
         foreach ($this->errors->getInvalidErrors() as $error) {
-            $lints[] = ['type' => 'Syntax Error', 'file' => $error->getFilePath(), 'message' => $this->sanitize($error->getMessage())];
+            $lints[] = ['type' => 'Syntax Error', 'file' => $error->getFilePath(), 'message' => $this->sanitize($error->getMessage(), $this->path)];
         }
 
         return $lints;
@@ -118,7 +118,7 @@ class Report
         }
 
         foreach ($this->errors->getLintErrors() as $error) {
-            $errors[] = ['type' => 'Broken File', 'file' => $error->getFilePath(), 'message' => $this->sanitize($error->getMessage())];
+            $errors[] = ['type' => 'Broken File', 'file' => $error->getFilePath(), 'message' => $this->sanitize($error->getMessage(), $this->path)];
         }
 
         return $errors;
@@ -132,19 +132,41 @@ class Report
      * message ends in a full stop.
      *
      * @param string $message
+     * @param string $path
      *
      * @return string
      */
-    protected function sanitize($message)
+    protected function sanitize($message, $path)
     {
-        $real = realpath($this->path);
-        $message = str_replace("{$real}/", '', $message);
-        $message = str_replace($real, '', $message);
-        $message = str_replace("{$this->path}/", '', $message);
-        $message = str_replace($this->path, '', $message);
+        $message = $this->sanitizePaths($message, $path);
+
         $message = str_replace('  ', ' ', $message);
         $message = trim(rtrim($message, '.!?'));
 
         return "{$message}.";
+    }
+
+    /**
+     * Sanitize the paths in the message.
+     *
+     * @param string $message
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function sanitizePaths($message, $path)
+    {
+        $real = realpath($path);
+
+        $message = str_replace("{$real}/", '', $message);
+        $message = str_replace($real, '', $message);
+        $message = str_replace("{$path}/", '', $message);
+        $message = str_replace($path, '', $message);
+
+        if (substr_count($path, '/') > 2) {
+            return $this->sanitizePaths($message, substr(strrpos($path, '/'), 0, $pos)));
+        }
+
+        return $message;
     }
 }
