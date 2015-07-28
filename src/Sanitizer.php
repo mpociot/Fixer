@@ -50,15 +50,15 @@ class Sanitizer
      */
     protected static function sanitizePaths($message, $path)
     {
-        $real = realpath($path);
+        while (substr_count($path, '/') > 2) {
+            $real = realpath($path);
 
-        $message = str_replace("{$real}/", '', $message);
-        $message = str_replace($real, '', $message);
-        $message = str_replace("{$path}/", '', $message);
-        $message = str_replace($path, '', $message);
+            $message = str_replace("{$real}/", '', $message);
+            $message = str_replace($real, '', $message);
+            $message = str_replace("{$path}/", '', $message);
+            $message = str_replace($path, '', $message);
 
-        if (substr_count($path, '/') > 2) {
-            return static::sanitizePaths($message, substr($path, 0, strrpos($path, '/')));
+            $path = substr($path, 0, strrpos($path, '/');
         }
 
         return $message;
