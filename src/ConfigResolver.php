@@ -77,6 +77,8 @@ class ConfigResolver
 
         $config = Config::create()->finder($finder)->setDir($path)->fixers($enabled);
 
+        $config->setUsingLinter($conf->isLinting());
+
         if ($cache) {
             $config->setUsingCache(true);
             $config->setCacheFile($cache);

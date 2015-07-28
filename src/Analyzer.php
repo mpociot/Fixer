@@ -36,6 +36,13 @@ class Analyzer
     protected $config;
 
     /**
+     * The file linter instance.
+     *
+     * @var \Symfony\CS\Linter\LinterInterface
+     */
+    protected $linter;
+
+    /**
      * Create an new analyzer instance.
      *
      * @param \Symfony\CS\Fixer                  $fixer
@@ -48,8 +55,7 @@ class Analyzer
     {
         $this->fixer = $fixer;
         $this->config = $config;
-
-        $this->fixer->setLinter($linter);
+        $this->linter = $linter;
 
         $this->fixer->registerBuiltInFixers();
         $this->fixer->registerBuiltInConfigs();
@@ -68,6 +74,10 @@ class Analyzer
     public function analyze($path, $cache = false, $config = null, $header = null)
     {
         $config = $this->config->resolve($this->fixer->getFixers(), $path, $cache, $config, $header);
+
+        if ($config->usingLinter()) {
+            $this->fixer->setLinter($this->linter);
+        }
 
         $this->fixer->fix($config);
 
