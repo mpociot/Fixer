@@ -58,7 +58,7 @@ class Sanitizer
             $message = str_replace("{$path}/", '', $message);
             $message = str_replace($path, '', $message);
 
-            $path = substr($path, 0, strrpos($path, '/');
+            $path = substr($path, 0, strrpos($path, '/'));
         }
 
         return $message;
