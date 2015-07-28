@@ -18,7 +18,7 @@ use Symfony\CS\Config\Config;
 use Symfony\CS\Fixer\Contrib\HeaderCommentFixer;
 
 /**
- * This is the fixer resolver class.
+ * This is the config resolver class.
  *
  * @author Graham Campbell <graham@alt-three.com>
  */

@@ -30,6 +30,7 @@ class FixerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerAnalyzer();
+        $this->registerConfigTester();
         $this->registerReportBuilder();
     }
 
@@ -49,6 +50,25 @@ class FixerServiceProvider extends ServiceProvider
         });
 
         $this->app->alias('fixer.analyzer', Analyzer::class);
+    }
+
+    /**
+     * Register the config tester class.
+     *
+     * @return void
+     */
+    protected function registerConfigTester()
+    {
+        $this->app->singleton('fixer.tester', function ($app) {
+            $analyzer = function () use ($app) {
+                return $app['fixer.analyzer'];
+            };
+            $path = $app['path.storage'];
+
+            return new ConfigTester($analyzer, $path);
+        });
+
+        $this->app->alias('fixer.tester', ConfigTester::class);
     }
 
     /**
@@ -82,6 +102,7 @@ class FixerServiceProvider extends ServiceProvider
         return [
             'fixer.analyzer',
             'fixer.builder',
+            'fixer.tester',
         ];
     }
 }

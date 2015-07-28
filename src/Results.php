@@ -11,24 +11,16 @@
 
 namespace StyleCI\Fixer;
 
-use Gitonomy\Git\Diff\Diff;
 use Symfony\CS\Error\ErrorsManager;
 
 /**
- * This is the report class.
+ * This is the results class.
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
-class Report
+class Results
 {
     use ErrorsTrait;
-
-    /**
-     * The project diff instance.
-     *
-     * @var \Gitonomy\Git\Diff\Diff
-     */
-    protected $diff;
 
     /**
      * The error manager instance.
@@ -45,48 +37,35 @@ class Report
     protected $path;
 
     /**
-     * Create a new report instance.
+     * The fixed sample.
      *
-     * @param \Gitonomy\Git\Diff\Diff         $diff
+     * @var string
+     */
+    protected $sample;
+
+    /**
+     * Create a new results instance.
+     *
      * @param \Symfony\CS\Error\ErrorsManager $errors
      * @param string                          $path
+     * @param string                          $sample
      *
      * @return void
      */
-    public function __construct(Diff $diff, ErrorsManager $errors, $path)
+    public function __construct(ErrorsManager $errors, $path, $sample)
     {
-        $this->diff = $diff;
         $this->errors = $errors;
         $this->path = $path;
+        $this->sample = $sample;
     }
 
     /**
-     * Get the get raw diff.
+     * Get the fixed sample.
      *
      * @return string
      */
-    public function diff()
+    public function sample()
     {
-        return $this->diff->getRawDiff();
-    }
-
-    /**
-     * Get the modified files.
-     *
-     * @return array
-     */
-    public function files()
-    {
-        return $this->diff->getFiles();
-    }
-
-    /**
-     * Was the analysis successful?
-     *
-     * @return bool
-     */
-    public function successful()
-    {
-        return empty($this->diff->getFiles());
+        return $this->sample;
     }
 }
