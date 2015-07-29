@@ -11,10 +11,7 @@
 
 namespace StyleCI\Fixer;
 
-use Closure;
 use Exception;
-use InvalidArgumentException;
-use StyleCI\Cache\CacheResolver;
 use StyleCI\Git\Repository;
 use StyleCI\Git\RepositoryFactory;
 
