@@ -31,6 +31,7 @@ class FixerServiceProvider extends ServiceProvider
     {
         $this->registerAnalyzer();
         $this->registerConfigTester();
+        $this->registerDiffApplier();
         $this->registerReportBuilder();
     }
 
@@ -72,6 +73,23 @@ class FixerServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the diff applier class.
+     *
+     * @return void
+     */
+    protected function registerDiffApplier()
+    {
+        $this->app->singleton('fixer.applier', function ($app) {
+            $factory = $app['git.factory'];
+            $path = $app['path.storage'];
+
+            return new DiffApplier($factory, $path);
+        });
+
+        $this->app->alias('fixer.applier', DiffApplier::class);
+    }
+
+    /**
      * Register the report builder class.
      *
      * @return void
@@ -101,6 +119,7 @@ class FixerServiceProvider extends ServiceProvider
     {
         return [
             'fixer.analyzer',
+            'fixer.applier',
             'fixer.builder',
             'fixer.tester',
         ];
