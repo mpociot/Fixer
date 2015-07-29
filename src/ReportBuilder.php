@@ -147,7 +147,7 @@ class ReportBuilder
     }
 
     /**
-     * Set things the repository locally for analysis.
+     * Setup the repository locally for use.
      *
      * @param \StyleCI\Git\Repository $repo
      * @param string                  $commit
