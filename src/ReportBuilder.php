@@ -12,6 +12,7 @@
 namespace StyleCI\Fixer;
 
 use Closure;
+use Exception;
 use InvalidArgumentException;
 use StyleCI\Cache\CacheResolver;
 use StyleCI\Git\Repository;
@@ -89,7 +90,14 @@ class ReportBuilder
     public function analyze($name, $id, $commit, $branch, $pr, $default, $key = null, $config = null, $header = null)
     {
         $repo = $this->factory->make($name, $path = "{$this->path}/repos/{$id}", $this->getKeyPath($key));
-        $this->setup($repo, $commit, $branch, $pr);
+
+        try {
+            $this->setup($repo, $commit, $branch, $pr);
+        } catch (Exception $e) {
+            $repo->delete();
+
+            throw $e;
+        }
 
         $name = $this->getName($branch, $pr);
         $this->cache->setUp($id, $name, "branch.{$default}");

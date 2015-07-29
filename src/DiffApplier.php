@@ -12,6 +12,7 @@
 namespace StyleCI\Fixer;
 
 use Closure;
+use Exception;
 use InvalidArgumentException;
 use StyleCI\Cache\CacheResolver;
 use StyleCI\Git\Repository;
@@ -68,7 +69,14 @@ class DiffApplier
     public function apply($name, $id, $commit, $branch, $target, $diff, $key = null)
     {
         $repo = $this->factory->make($name, $path = "{$this->path}/repos/{$id}", $this->getKeyPath($key));
-        $this->setup($repo, $commit, $branch);
+
+        try {
+            $this->setup($repo, $commit, $branch);
+        } catch (Exception $e) {
+            $repo->delete();
+
+            throw $e;
+        }
 
         $repo->checkout($target);
         $repo->apply($diff);
