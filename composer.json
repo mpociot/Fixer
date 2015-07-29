@@ -28,7 +28,7 @@
         "fabpot/php-cs-fixer": "~2.0.0",
         "styleci/cache": "~1.0",
         "styleci/config": "~1.1",
-        "styleci/git": "~1.0"
+        "styleci/git": "~2.0"
     },
     "require-dev": {
         "graham-campbell/testbench": "~3.0",

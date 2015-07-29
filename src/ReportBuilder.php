@@ -14,7 +14,7 @@ namespace StyleCI\Fixer;
 use Closure;
 use InvalidArgumentException;
 use StyleCI\Cache\CacheResolver;
-use StyleCI\Git\Repositories\RepositoryInterface;
+use StyleCI\Git\Repository;
 use StyleCI\Git\RepositoryFactory;
 
 /**
@@ -149,16 +149,16 @@ class ReportBuilder
     /**
      * Set things the repository locally for analysis.
      *
-     * @param \StyleCI\Git\Repositories\RepositoryInterface $repo
-     * @param string                                        $commit
-     * @param string|null                                   $branch
-     * @param int|null                                      $pr
+     * @param \StyleCI\Git\Repository $repo
+     * @param string                  $commit
+     * @param string|null             $branch
+     * @param int|null                $pr
      *
      * @throws \InvalidArgumentException
      *
      * @return void
      */
-    protected function setup(RepositoryInterface $repo, $commit, $branch, $pr)
+    protected function setup(Repository $repo, $commit, $branch, $pr)
     {
         if (!$repo->exists()) {
             $repo->get();
