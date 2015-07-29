@@ -16,6 +16,8 @@ use GrahamCampbell\TestBenchCore\ServiceProviderTrait;
 use StyleCI\Cache\CacheServiceProvider;
 use StyleCI\Config\ConfigServiceProvider;
 use StyleCI\Fixer\Analyzer;
+use StyleCI\Fixer\ConfigTester;
+use StyleCI\Fixer\DiffApplier;
 use StyleCI\Fixer\FixerServiceProvider;
 use StyleCI\Fixer\ReportBuilder;
 use StyleCI\Git\GitServiceProvider;
@@ -51,6 +53,26 @@ class ServiceProviderTest extends AbstractPackageTestCase
     public function testAnalyzerIsAlwaysDifferent()
     {
         $this->assertNotSame($this->app->make(Analyzer::class), $this->app->make(Analyzer::class));
+    }
+
+    public function testConfigTesterIsInjectable()
+    {
+        $this->assertIsInjectable(ConfigTester::class);
+    }
+
+    public function testConfigTesterIsAlwaysTheSame()
+    {
+        $this->assertSame($this->app->make(ConfigTester::class), $this->app->make(ConfigTester::class));
+    }
+
+    public function testDiffApplierIsInjectable()
+    {
+        $this->assertIsInjectable(DiffApplier::class);
+    }
+
+    public function testDiffApplierIsAlwaysTheSame()
+    {
+        $this->assertSame($this->app->make(DiffApplier::class), $this->app->make(DiffApplier::class));
     }
 
     public function testReportBuilderIsInjectable()
