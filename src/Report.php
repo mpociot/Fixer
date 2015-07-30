@@ -62,7 +62,7 @@ class Report
     /**
      * Get the get raw diff.
      *
-     * @return string|null
+     * @return string
      */
     public function diff()
     {
