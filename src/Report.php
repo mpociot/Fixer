@@ -68,14 +68,4 @@ class Report
     {
         return $this->diff;
     }
-
-    /**
-     * Was the analysis successful?
-     *
-     * @return bool
-     */
-    public function successful()
-    {
-        return $this->diff === '';
-    }
 }
