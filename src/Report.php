@@ -11,6 +11,7 @@
 
 namespace StyleCI\Fixer;
 
+use Gitonomy\Git\Diff\Diff;
 use Symfony\CS\Error\ErrorsManager;
 
 /**
@@ -21,6 +22,13 @@ use Symfony\CS\Error\ErrorsManager;
 class Report
 {
     use ErrorsTrait;
+
+    /**
+     * The project diff instance.
+     *
+     * @var \Gitonomy\Git\Diff\Diff
+     */
+    protected $diff;
 
     /**
      * The error manager instance.
@@ -37,26 +45,19 @@ class Report
     protected $path;
 
     /**
-     * The raw diff.
-     *
-     * @var string
-     */
-    protected $diff;
-
-    /**
      * Create a new report instance.
      *
+     * @param \Gitonomy\Git\Diff\Diff         $diff
      * @param \Symfony\CS\Error\ErrorsManager $errors
      * @param string                          $path
-     * @param string                          $diff
      *
      * @return void
      */
-    public function __construct(ErrorsManager $errors, $path, $diff)
+    public function __construct(Diff $diff, ErrorsManager $errors, $path)
     {
+        $this->diff = $diff;
         $this->errors = $errors;
         $this->path = $path;
-        $this->diff = $diff;
     }
 
     /**
@@ -66,7 +67,17 @@ class Report
      */
     public function diff()
     {
-        return $this->diff;
+        return $this->diff->getRawDiff();
+    }
+
+    /**
+     * Get the modified files.
+     *
+     * @return array
+     */
+    public function files()
+    {
+        return $this->diff->getFiles();
     }
 
     /**
@@ -76,6 +87,6 @@ class Report
      */
     public function successful()
     {
-        return $this->diff === '';
+        return empty($this->diff->getFiles());
     }
 }
