@@ -89,7 +89,7 @@ class ReportBuilder
      */
     public function analyze($name, $id, $commit, $branch, $pr, $default, $key = null, $config = null, $header = null)
     {
-        $repo = $this->factory->make($name, $path = "{$this->path}/repos/{$id}", $this->getKeyPath($key));
+        $repo = $this->factory->make($name, $path = "{$this->path}/repos/{$id}", $key);
 
         try {
             $this->setup($repo, $commit, $branch, $pr);
@@ -107,28 +107,6 @@ class ReportBuilder
         $this->cache->tearDown($id, $name);
 
         return new Report($repo->diff(), $errors, $path);
-    }
-
-    /**
-     * Save the private key and return its path.
-     *
-     * If no key is provided, then we do nothing and return nothing.
-     *
-     * @param string|null $key
-     *
-     * @return string|null
-     */
-    protected function getKeyPath($key = null)
-    {
-        if (!$key) {
-            return;
-        }
-
-        $path = "{$this->path}/key";
-        file_put_contents($path, $key);
-        chmod($path, 0600);
-
-        return $path;
     }
 
     /**
