@@ -127,7 +127,7 @@ class ConfigResolver
     }
 
     /**
-     * Configure the finder with provided configuration.
+     * Configure the finder with provided config.
      *
      * @param \StyleCI\Config\FinderConfig $finderConfig
      * @param \StyleCI\Fixer\Finder        $finder
