@@ -59,11 +59,12 @@ class DiffApplier
      * @param string      $branch
      * @param string      $target
      * @param string      $diff
+     * @param string      $message
      * @param string|null $key
      *
      * @return void
      */
-    public function apply($name, $id, $commit, $branch, $target, $diff, $key = null)
+    public function apply($name, $id, $commit, $branch, $target, $diff, $message, $key = null)
     {
         $repo = $this->factory->make($name, $path = "{$this->path}/repos/{$id}", $this->getKeyPath($key));
 
@@ -77,7 +78,7 @@ class DiffApplier
 
         $repo->checkout($target);
         $repo->apply($diff);
-        $repo->commit('Applied fixes from StyleCI');
+        $repo->commit($message);
 
         $repo->publish($target);
     }
