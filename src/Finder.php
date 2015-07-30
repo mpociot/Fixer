@@ -30,7 +30,7 @@ class Finder extends SymfonyFinder implements FinderInterface
     {
         parent::__construct();
 
-        $this->files()->ignoreDotFiles(true)->ignoreVCS(true)->exclude('vendor');
+        $this->files()->ignoreDotFiles(true)->ignoreVCS(true);
     }
 
     /**

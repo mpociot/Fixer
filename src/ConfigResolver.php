@@ -119,20 +119,9 @@ class ConfigResolver
      */
     protected function getFinderObject(Conf $conf)
     {
-        $finder = Finder::create()->notName('*.blade.php');
-        $finderConfig = $conf->getFinderConfig();
+        $finder = Finder::create();
 
-        if ($finderConfig) {
-            $this->configureFinder($finderConfig, $finder);
-        } else {
-            foreach ((array) $conf->getExtensions() as $extension) {
-                $finder->name('*.'.$extension);
-            }
-
-            foreach ((array) $conf->getExcluded() as $excluded) {
-                $finder->exclude($excluded);
-            }
-        }
+        $this->configureFinder($conf->getFinderConfig(), $finder);
 
         return $finder;
     }
