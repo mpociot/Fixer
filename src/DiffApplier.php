@@ -60,11 +60,12 @@ class DiffApplier
      * @param string      $target
      * @param string      $diff
      * @param string      $message
+     * @param string|null $author
      * @param string|null $key
      *
      * @return void
      */
-    public function apply($name, $id, $commit, $branch, $target, $diff, $message, $key = null)
+    public function apply($name, $id, $commit, $branch, $target, $diff, $message, $author = null, $key = null)
     {
         $repo = $this->factory->make($name, $path = "{$this->path}/repos/{$id}", $key);
 
@@ -78,7 +79,7 @@ class DiffApplier
 
         $repo->checkout($target);
         $repo->apply($diff);
-        $repo->commit($message);
+        $repo->commit($message, $author);
 
         $repo->publish($target);
     }
