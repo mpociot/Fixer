@@ -106,7 +106,7 @@ class ReportBuilder
 
         $this->cache->tearDown($id, $name);
 
-        return new Report($repo->diff(), $errors, $path);
+        return new Report($errors, $path, $repo->diff());
     }
 
     /**
