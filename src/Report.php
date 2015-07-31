@@ -83,7 +83,7 @@ class Report
     /**
      * Does the diff contain binary files?
      *
-     * @return array
+     * @return bool
      */
     public function binary()
     {
