@@ -71,16 +71,6 @@ class Report
     }
 
     /**
-     * Get the modified files.
-     *
-     * @return array
-     */
-    public function files()
-    {
-        return $this->diff->getFiles();
-    }
-
-    /**
      * Was the analysis successful?
      *
      * @return bool
@@ -88,5 +78,21 @@ class Report
     public function successful()
     {
         return empty($this->diff->getFiles());
+    }
+
+    /**
+     * Does the diff contain binary files?
+     *
+     * @return array
+     */
+    public function binary()
+    {
+        foreach ($this->diff->getFiles() as $file) {
+            if ($file->isBinary()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
