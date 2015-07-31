@@ -62,14 +62,16 @@ class ConfigTester
         $path = $this->path.'/'.str_random(8);
         $file = $path.'/Test.php';
 
-        mkdir($path);
-        file_put_contents($file, $sample);
+        try {
+            mkdir($path);
+            file_put_contents($file, $sample);
 
-        $errors = $this->getAnalyzer()->analyze($path, false, $config, $header);
-        $fixed = file_get_contents($file);
-
-        unlink($file);
-        unlink($path);
+            $errors = $this->getAnalyzer()->analyze($path, false, $config, $header);
+            $fixed = file_get_contents($file);
+        } finally {
+            unlink($file);
+            unlink($path);
+        }
 
         return new Results($errors, $path, $fixed);
     }
