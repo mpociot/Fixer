@@ -29,10 +29,27 @@ class FixerServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerConfigResolver();
         $this->registerAnalyzer();
         $this->registerConfigTester();
         $this->registerDiffApplier();
         $this->registerReportBuilder();
+    }
+
+    /**
+     * Register the config resolver class.
+     *
+     * @return void
+     */
+    protected function registerConfigResolver()
+    {
+        $this->app->bind('fixer.resolver', function ($app) {
+            $factory = $app['config.factory'];
+
+            return new ConfigResolver($factory);
+        });
+
+        $this->app->alias('fixer.resolver', ConfigResolver::class);
     }
 
     /**
@@ -43,11 +60,11 @@ class FixerServiceProvider extends ServiceProvider
     protected function registerAnalyzer()
     {
         $this->app->bind('fixer.analyzer', function ($app) {
+            $config = $app['fixer.resolver'];
             $fixer = new Fixer();
-            $config = new ConfigResolver($app['config.factory']);
             $linter = new Linter();
 
-            return new Analyzer($fixer, $config, $linter);
+            return new Analyzer($config, $fixer, $linter);
         });
 
         $this->app->alias('fixer.analyzer', Analyzer::class);
@@ -121,6 +138,7 @@ class FixerServiceProvider extends ServiceProvider
             'fixer.analyzer',
             'fixer.applier',
             'fixer.builder',
+            'fixer.resolver',
             'fixer.tester',
         ];
     }

@@ -22,18 +22,18 @@ use Symfony\CS\Linter\LinterInterface;
 class Analyzer
 {
     /**
-     * The cs fixer instance.
-     *
-     * @var \Symfony\CS\Fixer
-     */
-    protected $fixer;
-
-    /**
      * The config resolver instance.
      *
      * @var \StyleCI\Fixer\ConfigResolver
      */
     protected $config;
+
+    /**
+     * The cs fixer instance.
+     *
+     * @var \Symfony\CS\Fixer
+     */
+    protected $fixer;
 
     /**
      * The file linter instance.
@@ -51,10 +51,10 @@ class Analyzer
      *
      * @return void
      */
-    public function __construct(Fixer $fixer, ConfigResolver $config, LinterInterface $linter)
+    public function __construct(ConfigResolver $config, Fixer $fixer, LinterInterface $linter)
     {
-        $this->fixer = $fixer;
         $this->config = $config;
+        $this->fixer = $fixer;
         $this->linter = $linter;
 
         $this->fixer->registerBuiltInFixers();
