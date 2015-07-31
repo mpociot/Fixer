@@ -70,7 +70,7 @@ class ConfigTester
             $fixed = file_get_contents($file);
         } finally {
             unlink($file);
-            unlink($path);
+            rmdir($path);
         }
 
         return new Results($errors, $path, $fixed);
