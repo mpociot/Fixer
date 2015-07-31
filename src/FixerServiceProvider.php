@@ -43,7 +43,7 @@ class FixerServiceProvider extends ServiceProvider
      */
     protected function registerConfigResolver()
     {
-        $this->app->bind('fixer.resolver', function ($app) {
+        $this->app->singleton('fixer.resolver', function ($app) {
             $factory = $app['config.factory'];
 
             return new ConfigResolver($factory);
