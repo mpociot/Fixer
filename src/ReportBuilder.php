@@ -95,8 +95,7 @@ class ReportBuilder
             $this->setup($repo, $commit, $branch, $pr);
         } catch (Exception $e) {
             $repo->delete();
-
-            throw $e;
+            $this->setup($repo, $commit, $branch, $pr);
         }
 
         $name = $this->getName($branch, $pr);
