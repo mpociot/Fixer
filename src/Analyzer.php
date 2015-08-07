@@ -45,8 +45,8 @@ class Analyzer
     /**
      * Create an new analyzer instance.
      *
-     * @param \Symfony\CS\Fixer                  $fixer
      * @param \StyleCI\Fixer\ConfigResolver      $config
+     * @param \Symfony\CS\Fixer                  $fixer
      * @param \Symfony\CS\Linter\LinterInterface $linter
      *
      * @return void
