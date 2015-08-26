@@ -73,8 +73,7 @@ class DiffApplier
             $this->setup($repo, $commit, $branch);
         } catch (Exception $e) {
             $repo->delete();
-
-            throw $e;
+            $this->setup($repo, $commit, $branch);
         }
 
         $repo->checkout($target);
