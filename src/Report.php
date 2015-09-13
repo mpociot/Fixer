@@ -31,20 +31,6 @@ class Report
     protected $diff;
 
     /**
-     * The error manager instance.
-     *
-     * @var \Symfony\CS\Error\ErrorsManager
-     */
-    protected $errors;
-
-    /**
-     * The location of the project.
-     *
-     * @var string
-     */
-    protected $path;
-
-    /**
      * Create a new report instance.
      *
      * @param \Gitonomy\Git\Diff\Diff         $diff
