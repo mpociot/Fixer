@@ -17,15 +17,9 @@
             "email": "joe@alt-three.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url":  "https://github.com/StyleCI/PHP-CS-Fixer"
-        }
-    ],
     "require": {
         "php": ">=5.6.4",
-        "fabpot/php-cs-fixer": "~2.0.0",
+        "styleci/php-cs-fixer": "~1.0.0",
         "styleci/cache": "~1.1",
         "styleci/config": "~2.2",
         "styleci/git": "~2.0"
