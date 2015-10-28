@@ -15,7 +15,8 @@ use StyleCI\Config\Config as Conf;
 use StyleCI\Config\ConfigFactory;
 use StyleCI\Config\FinderConfig;
 use Symfony\CS\Config\Config;
-use Symfony\CS\Fixer\Contrib\HeaderCommentFixer;
+use Symfony\CS\FixerFactory;
+use Symfony\CS\RuleSet;
 
 /**
  * This is the config resolver class.
@@ -46,42 +47,38 @@ class ConfigResolver
     /**
      * Get the php-cs-fixer config object for the repo at the given path.
      *
-     * @param \Symfony\CS\FixerInterface[] $fixers
-     * @param string                       $path
-     * @param string|false                 $cache
-     * @param string|null                  $config
-     * @param string|null                  $header
+     * @param string       $path
+     * @param string|false $cache
+     * @param string|null  $config
+     * @param string|null  $header
      *
      * @return \Symfony\CS\Config\Config
      */
-    public function resolve(array $fixers, $path, $cache = false, $config = null, $header = null)
+    public function resolve($path, $cache = false, $config = null, $header = null)
     {
         $conf = $this->getConfigObject($path, $config);
         $finder = $this->getFinderObject($conf);
 
-        $enabled = [];
-        $names = $conf->getFixers();
+        $rules = [];
+
+        foreach ($conf->getFixers() as $fixer) {
+            $rules[$fixer] = true;
+        }
 
         if ($header) {
-            $names[] = 'header_comment';
-            HeaderCommentFixer::setHeader($header);
-        } else {
-            HeaderCommentFixer::setHeader('');
+            $rules['header_comment'] = ['header' => $header];
         }
 
-        foreach ($fixers as $fixer) {
-            if (in_array($fixer->getName(), $names, true)) {
-                $enabled[] = $fixer;
-            }
-        }
-
-        $config = Config::create()->finder($finder)->setDir($path)->fixers($enabled);
-
+        $config = Config::create()->finder($finder)->setDir($path);
+        $config->setRiskyAllowed(true)->setRules($rules);
         $config->setUsingLinter($conf->isLinting());
 
+        $factory = FixerFactory::create()->attachConfig($config);
+        $fixers = $this->factory->useRuleSet(new RuleSet(($rules))->getFixers();
+        $config->fixers($fixers);
+
         if ($cache) {
-            $config->setUsingCache(true);
-            $config->setCacheFile($cache);
+            $config->setCacheFile($cache)->setUsingCache(true);
         } else {
             $config->setUsingCache(false);
         }

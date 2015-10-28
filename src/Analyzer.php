@@ -56,9 +56,6 @@ class Analyzer
         $this->config = $config;
         $this->fixer = $fixer;
         $this->linter = $linter;
-
-        $this->fixer->registerBuiltInFixers();
-        $this->fixer->registerBuiltInConfigs();
     }
 
     /**
@@ -73,7 +70,7 @@ class Analyzer
      */
     public function analyze($path, $cache = false, $config = null, $header = null)
     {
-        $config = $this->config->resolve($this->fixer->getFixers(), $path, $cache, $config, $header);
+        $config = $this->config->resolve($path, $cache, $config, $header);
 
         if ($config->usingLinter()) {
             $this->fixer->setLinter($this->linter);
