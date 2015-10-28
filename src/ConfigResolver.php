@@ -74,7 +74,7 @@ class ConfigResolver
         $config->setUsingLinter($conf->isLinting());
 
         $factory = FixerFactory::create()->attachConfig($config);
-        $fixers = $this->factory->useRuleSet(new RuleSet(($rules))->getFixers();
+        $fixers = $this->factory->useRuleSet(new RuleSet(($rules))->getFixers());
         $config->fixers($fixers);
 
         if ($cache) {
