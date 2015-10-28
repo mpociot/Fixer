@@ -73,7 +73,7 @@ class ConfigResolver
         $config->setRiskyAllowed(true)->setRules($rules);
         $config->setUsingLinter($conf->isLinting());
 
-        $factory = FixerFactory::create()->attachConfig($config);
+        $factory = FixerFactory::create()->registerBuiltInFixers()->attachConfig($config);
         $fixers = $factory->useRuleSet(new RuleSet($rules))->getFixers();
         $config->fixers($fixers);
 
