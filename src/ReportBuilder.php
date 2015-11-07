@@ -54,21 +54,32 @@ class ReportBuilder
     protected $path;
 
     /**
+     * The backoff time in ms.
+     *
+     * Set to false if we don't want to backoff on git error.
+     *
+     * @var int|false
+     */
+    protected $backoff;
+
+    /**
      * Create a new report builder instance.
      *
      * @param \StyleCI\Git\RepositoryFactory $factory
      * @param \Closure                       $analyzer
      * @param \StyleCI\Cache\CacheResolver   $cache
      * @param string                         $path
+     * @param int|false                      $backoff
      *
      * @return void
      */
-    public function __construct(RepositoryFactory $factory, Closure $analyzer, CacheResolver $cache, $path)
+    public function __construct(RepositoryFactory $factory, Closure $analyzer, CacheResolver $cache, $path, $backoff = false)
     {
         $this->factory = $factory;
         $this->analyzer = $analyzer;
         $this->cache = $cache;
         $this->path = $path;
+        $this->backoff = $backoff;
     }
 
     /**
@@ -94,6 +105,10 @@ class ReportBuilder
         try {
             $this->setup($repo, $commit, $branch, $pr);
         } catch (Exception $e) {
+            if ($this->backoff) {
+                usleep($this->backoff * 1000);
+            }
+
             $repo->delete();
             $this->setup($repo, $commit, $branch, $pr);
         }

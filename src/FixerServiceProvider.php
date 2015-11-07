@@ -100,7 +100,7 @@ class FixerServiceProvider extends ServiceProvider
             $factory = $app['git.factory'];
             $path = $app['path.storage'];
 
-            return new DiffApplier($factory, $path);
+            return new DiffApplier($factory, $path, 1000);
         });
 
         $this->app->alias('fixer.applier', DiffApplier::class);
@@ -121,7 +121,7 @@ class FixerServiceProvider extends ServiceProvider
             $cache = $app['cache.resolver'];
             $path = $app['path.storage'];
 
-            return new ReportBuilder($factory, $analyzer, $cache, $path);
+            return new ReportBuilder($factory, $analyzer, $cache, $path, 1000);
         });
 
         $this->app->alias('fixer.builder', ReportBuilder::class);

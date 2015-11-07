@@ -37,17 +37,28 @@ class DiffApplier
     protected $path;
 
     /**
+     * The backoff time in ms.
+     *
+     * Set to false if we don't want to backoff on git error.
+     *
+     * @var int|false
+     */
+    protected $backoff;
+
+    /**
      * Create a new diff applier instance.
      *
      * @param \StyleCI\Git\RepositoryFactory $factory
      * @param string                         $path
+     * @param int|false                      $backoff
      *
      * @return void
      */
-    public function __construct(RepositoryFactory $factory, $path)
+    public function __construct(RepositoryFactory $factory, $path, $backoff = false)
     {
         $this->factory = $factory;
         $this->path = $path;
+        $this->backoff = $backoff;
     }
 
     /**
@@ -72,6 +83,10 @@ class DiffApplier
         try {
             $this->setup($repo, $commit, $branch);
         } catch (Exception $e) {
+            if ($this->backoff) {
+                usleep($this->backoff * 1000);
+            }
+
             $repo->delete();
             $this->setup($repo, $commit, $branch);
         }
