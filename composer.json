@@ -20,9 +20,9 @@
     "require": {
         "php": ">=5.6.4",
         "styleci/php-cs-fixer": "~1.2.0",
-        "styleci/cache": "~1.1",
-        "styleci/config": "~2.3",
-        "styleci/git": "~2.0"
+        "styleci/cache": "~1.2",
+        "styleci/config": "~2.4",
+        "styleci/git": "~2.1"
     },
     "require-dev": {
         "graham-campbell/testbench": "~3.0",
