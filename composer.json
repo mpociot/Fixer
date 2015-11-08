@@ -25,8 +25,8 @@
         "styleci/git": "~2.1"
     },
     "require-dev": {
-        "graham-campbell/testbench": "~3.0",
-        "phpunit/phpunit": "~5.0"
+        "graham-campbell/testbench": "^3.1",
+        "phpunit/phpunit": "^5.0"
     },
     "suggest": {
         "illuminate/support": "Enables Laravel support."
