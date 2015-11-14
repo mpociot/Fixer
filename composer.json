@@ -22,7 +22,7 @@
         "styleci/cache": "^1.2",
         "styleci/config": "^2.4",
         "styleci/git": "^2.1",
-        "styleci/php-cs-fixer": "1.2.*"
+        "styleci/php-cs-fixer": "1.3.*"
     },
     "require-dev": {
         "graham-campbell/testbench": "^3.1",
