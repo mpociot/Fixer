@@ -72,13 +72,12 @@ class DiffApplier
     {
         $repo = $this->factory->make($name, $path = "{$this->path}/repos/{$id}", $key);
 
-        $this->attempt($repo, function (Repository $repo) use ($commit, $branch) {
+        $this->attempt($repo, function (Repository $repo) use ($commit, $branch, $target, $diff, $message, $author) {
             $this->setup($repo, $commit, $branch);
+            $repo->checkout($target);
+            $repo->apply($diff);
+            $repo->commit($message, $author);
         });
-
-        $repo->checkout($target);
-        $repo->apply($diff);
-        $repo->commit($message, $author);
 
         $repo->publish($target);
     }
