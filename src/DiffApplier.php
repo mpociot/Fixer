@@ -11,7 +11,6 @@
 
 namespace StyleCI\Fixer;
 
-use Exception;
 use StyleCI\Git\Repository;
 use StyleCI\Git\RepositoryFactory;
 
@@ -22,6 +21,8 @@ use StyleCI\Git\RepositoryFactory;
  */
 class DiffApplier
 {
+    use AttemptTrait;
+
     /**
      * The git repository factory instance.
      *
@@ -35,15 +36,6 @@ class DiffApplier
      * @var string
      */
     protected $path;
-
-    /**
-     * The backoff time in ms.
-     *
-     * Set to false if we don't want to backoff on git error.
-     *
-     * @var int|false
-     */
-    protected $backoff;
 
     /**
      * Create a new diff applier instance.
@@ -80,16 +72,9 @@ class DiffApplier
     {
         $repo = $this->factory->make($name, $path = "{$this->path}/repos/{$id}", $key);
 
-        try {
+        $this->attempt($repo, function (Repository $repo) use ($commit, $branch) {
             $this->setup($repo, $commit, $branch);
-        } catch (Exception $e) {
-            if ($this->backoff) {
-                usleep($this->backoff * 1000);
-            }
-
-            $repo->delete();
-            $this->setup($repo, $commit, $branch);
-        }
+        });
 
         $repo->checkout($target);
         $repo->apply($diff);

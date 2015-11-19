@@ -54,15 +54,6 @@ class ReportBuilder
     protected $path;
 
     /**
-     * The backoff time in ms.
-     *
-     * Set to false if we don't want to backoff on git error.
-     *
-     * @var int|false
-     */
-    protected $backoff;
-
-    /**
      * Create a new report builder instance.
      *
      * @param \StyleCI\Git\RepositoryFactory $factory
@@ -102,16 +93,9 @@ class ReportBuilder
     {
         $repo = $this->factory->make($name, $path = "{$this->path}/repos/{$id}", $key);
 
-        try {
+        $this->attempt($repo, function (Repository $repo) use ($commit, $branch, $pr) {
             $this->setup($repo, $commit, $branch, $pr);
-        } catch (Exception $e) {
-            if ($this->backoff) {
-                usleep($this->backoff * 1000);
-            }
-
-            $repo->delete();
-            $this->setup($repo, $commit, $branch, $pr);
-        }
+        });
 
         $name = $this->getName($branch, $pr);
         $this->cache->setUp($id, $name, "branch.{$default}");
