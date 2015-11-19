@@ -98,11 +98,13 @@ class ReportBuilder
         });
 
         $name = $this->getName($branch, $pr);
-        $this->cache->setUp($id, $name, "branch.{$default}");
 
-        $errors = $this->getAnalyzer()->analyze($path, $this->cache->path(), $config, $header);
-
-        $this->cache->tearDown($id, $name);
+        try {
+            $this->cache->setUp($id, $name, "branch.{$default}");
+            $errors = $this->getAnalyzer()->analyze($path, $this->cache->path(), $config, $header);
+        } finally {
+            $this->cache->tearDown($id, $name);
+        }
 
         return new Report($repo->diff(), $errors, $path);
     }
