@@ -24,6 +24,8 @@ use StyleCI\Git\RepositoryFactory;
  */
 class ReportBuilder
 {
+    use AttemptTrait;
+
     /**
      * The git repository factory instance.
      *
