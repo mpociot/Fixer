@@ -97,7 +97,7 @@ class DiffApplier
             $repo->get();
         }
 
-        $repo->fetch("refs/heads/$branch");
+        $repo->fetch("refs/heads/$branch", true);
 
         $repo->reset($commit);
     }

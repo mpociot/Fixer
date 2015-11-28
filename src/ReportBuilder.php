@@ -152,9 +152,9 @@ class ReportBuilder
         }
 
         if ($branch) {
-            $repo->fetch("refs/heads/$branch");
+            $repo->fetch("refs/heads/$branch", true);
         } elseif ($pr) {
-            $repo->fetch("refs/pull/$pr/head");
+            $repo->fetch("refs/pull/$pr/head", true);
         } else {
             throw new InvalidArgumentException('Either a branch name or PR number provided.');
         }
