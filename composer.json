@@ -21,7 +21,7 @@
         "php": ">=5.6.4",
         "styleci/cache": "^1.2",
         "styleci/config": "^2.5",
-        "styleci/git": "^2.2",
+        "styleci/git": "^2.3",
         "styleci/php-cs-fixer": "1.4.*"
     },
     "require-dev": {
