@@ -100,7 +100,7 @@ class ConfigResolver
             return $this->factory->makeFromYaml($config);
         }
 
-        if (file_exists($configPath = $path.'/.styleci.yml')) {
+        if (file_exists($configPath = $path.'/.codecheck.yml')) {
             return $this->factory->makeFromYaml(file_get_contents($configPath));
         }
 

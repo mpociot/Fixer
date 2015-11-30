@@ -20,10 +20,20 @@
     "require": {
         "php": ">=5.6.4",
         "styleci/cache": "^1.2",
-        "styleci/config": "^2.5",
+        "styleci/config": "dev-master",
         "styleci/git": "^2.3",
-        "styleci/php-cs-fixer": "1.4.*"
+        "styleci/php-cs-fixer": "dev-master"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "http://www.github.com/mpociot/Config"
+        },
+        {
+            "type": "vcs",
+            "url": "http://www.github.com/mpociot/PHP-CS-Fixer"
+        }
+    ],
     "require-dev": {
         "graham-campbell/testbench": "^3.1",
         "phpunit/phpunit": "^5.0"
